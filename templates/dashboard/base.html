@@ -1,0 +1,24 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock title %}</title>
+  <link rel="shortcut icon" type="image/png" href="{% static "images/logos/favicon.png" %}" />
+  <link rel="stylesheet" href="{% static "css/styles.min.css" %}" />
+</head>
+
+<body>
+    {% block body %}{% endblock body %}
+  <script src="{%static 'libs/jquery/dist/jquery.min.js'%}"></script>
+  <script src="{%static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js'%}"></script>
+  <script src="{%static 'js/sidebarmenu.js'%}"></script>
+  <script src="{%static 'js/app.min.js'%}"></script>
+  <script src="{%static 'libs/apexcharts/dist/apexcharts.min.js'%}"></script>
+  <script src="{%static 'libs/simplebar/dist/simplebar.js'%}"></script>
+  <script src="{%static 'js/dashboard.js'%}"></script>
+</body>
+
+</html>
