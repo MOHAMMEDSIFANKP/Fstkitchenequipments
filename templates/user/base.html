@@ -36,11 +36,56 @@
 	<link rel="stylesheet" type="text/css" href="{%static 'css/main.css' %}">
     {% block link %}{% endblock %}
 <!--===============================================================================================-->
+<style>
+	 .scroll-container {
+    width: 100%;
+    height: auto;
+    overflow-y: hidden; 
+    display: flex;
+    white-space: nowrap;
+    transition: transform 0.5s ease;
+	scrollbar-width: none;
+	
+    scrollbar-color: #ddd #f0f0f0; 
+
+    &::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    &::-webkit-scrollbar-track {
+	scrollbar-width: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+		scrollbar-width: none;
+
+    }
+  }
+
+  .col-md-6 {
+    flex: 0 0 auto; 
+  }
+
+  .block1 {
+    display: inline-block; 
+    margin-right: 15px;
+  }
+</style>
 <body class="animsition">
 	
 {% include "user/navbar.html" %}
 {% block body %}{% endblock %}
 {% include "user/footer.html" %}
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	  setInterval(function () {
+		const container = document.querySelector('.scroll-container');
+		container.scrollLeft += container.clientWidth;
+		
+	  }, 3000);
+	});
+  </script>
+  
 <!--===============================================================================================-->	
 	<script src="{%static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
 <!--===============================================================================================-->

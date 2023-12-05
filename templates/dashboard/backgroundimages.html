@@ -1,0 +1,262 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Backgroud Images | Dashboard{% endblock %}
+{% block body %}
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    {% include "dashboard/sidebar.html" %}
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        {% include "dashboard/navbar.html" %}
+        <!--  Header End -->
+        <div class="container" style="padding-top: 70px;">
+            <a type="button" class="btn btn-primary w-60" data-bs-toggle="modal" data-bs-target="#addmodal">
+                <i title="Add Category" class="fa fa-plus">Add Images</i>
+            </a>
+            {{form.non_field_errors }}
+            {{form.field_error }}
+            <div class="d-flex justify-content-between align-items-center ">
+                <div class="modal fade " id="addmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" >
+
+                                <form action="{%url 'BackgroudImages'%}" id="backgroudimages-forms" enctype="multipart/form-data" method="POST">
+                                    {% csrf_token %}
+                                    <div style="width: 100px;"
+                                        class="card-header category-img position-relative overflow-hidden bg-transparent border p-0">
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input name="image" type="file" accept="image/png, image/jpeg, image/svg"
+                                            class="form-control" id="image-input" />
+                                        <small id="image-error" class="text-danger text-center "></small>
+                                        {{ form.image.errors }}
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input name='sub_heading' type="text" id="form3Example3cg"
+                                            class="form-control form-control-lg" />
+                                        <label class="form-label" for="form3Example3cg">Sub heading</label>
+                                        <small id="sub_heading-error" class="text-danger ps-2 text-center"></small>
+                                        {{ form.sub_heading.errors }}
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input name='main_heading' type="text" id="form3Example3cg"
+                                            class="form-control form-control-lg" />
+                                        <label class="form-label" for="form3Example3cg">Main heading</label>
+                                        <small id="main_heading-error" class="text-danger ps-2 text-center"></small>
+                                        {{ form.main_heading.errors }}
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit"
+                                            class="btn btn-primary btn-lg gradient-custom-4 w-50 text-light"
+                                            type="submit">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p>search</p>
+                </div>
+            </div>
+            <div>
+                <div class="col-12">
+                    <div class="card recent-sales overflow-auto">
+                        <div class="card-body">
+
+                            <table class="table table-borderless datatable refresh">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">id</th>
+                                        <th scope="col">image</th>
+                                        <th scope="col">Sub heading</th>
+                                        <th scope="col">Main heading</th>
+                                    </tr>
+                                </thead>
+
+                                {% for bgimage in bgimages_data %}
+
+                                <tr>
+                                    <td> {{bgimage.id}} </td>
+                                    <td>
+                                        <div style="width: 60px;" class="overflow-hidden">
+                                            <img class="w-100" src=" {{bgimage.image.url}} " alt="">
+                                        </div>
+                                    </td>
+                                    <td> {{bgimage.sub_heading}} </td>
+                                    <td> {{bgimage.main_heading}} </td>
+                                    <!-- edit -->
+                                    <td>
+                                        <!-- Button trigger modal -->
+                                        <a type="button" class="fs-4 btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#confirmEdit{{forloop.counter}}">
+                                            <i title="" class="fa fa-edit">edit</i>
+                                        </a>
+                                        <!--Edit Modal -->
+                                        <div class="modal fade" id="confirmEdit{{forloop.counter}}" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit
+                                                            Category</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="PUT" action="{%url 'update_item' bgimage.id%}"
+                                                            enctype="multipart/form-data" id="backgroudimagesupdated-forms" >
+                                                            {% csrf_token %}
+
+                                                            <div style="width: 100px;"
+                                                                class="card-header category-img position-relative overflow-hidden bg-transparent border p-0">
+                                                                <img class="img-fluid w-100"
+                                                                    src="{{bgimage.image.url}} " alt="">
+                                                            </div>
+
+                                                            <div class="form-outline mb-4">
+                                                                <input name="image" type="file"
+                                                                    accept="image/png, image/jpeg, image/svg"
+                                                                    class="form-control" id="image-inputs" />
+                                                                <small id="image-errors"
+                                                                    class="text-danger text-center"></small>
+                                                            </div>
+
+                                                            <div class="form-outline mb-4">
+                                                                <input name='sub_heading' value="{{bgimage.sub_heading}}"
+                                                                    type="text" id="form3Example3cg"
+                                                                    class="form-control form-control-lg" />
+                                                                <label class="form-label" for="form3Example3cg">Category
+                                                                    name</label>
+                                                            </div>
+                                                            <div class="form-outline mb-4">
+                                                                <input name='main_heading'
+                                                                    value="{{bgimage.main_heading}}" type="text"
+                                                                    id="form3Example3cg"
+                                                                    class="form-control form-control-lg" />
+                                                                <label class="form-label"
+                                                                    for="form3Example3cg">Discription</label>
+                                                            </div>
+                                                            <div class="d-flex justify-content-center">
+                                                                <button type="submit"
+                                                                    class="btn btn-danger btn-lg gradient-custom-4 w-50 text-light"
+                                                                    type="submit">Save Changes</button>
+                                                            </div>
+
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Button trigger modal -->
+
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal{{forloop.counter}}">
+                                            Delete
+                                        </button>
+                                    </td>
+                                    <!-- Modal  for delete the Category -->
+                                    <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    delete Category {{c.categories }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="">
+
+                                                        <button type="submit" class="btn btn-danger">Confirm</button>
+                                                    </form>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </td>
+                                    <!--deleting ended-->
+
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div><!-- End Recent Sales -->
+            </div>
+        </div>
+    </div>
+
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#backgroudimages-forms').submit(function(e) {
+            e.preventDefault();
+            
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $('.refresh').load(location.href + " .refresh");
+                    if (response.success) {
+                        $('#addmodal').modal('hide');
+                        $('#backgroudimages-forms')[0].reset();
+                    } else {
+                        updateErrorMessages(response.errors);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Something wrong')
+                }
+            });
+        });
+    });
+
+    function updateErrorMessages(errors) {
+        console.log(errors);
+        if (errors.image){
+            $('#' + 'image-error').text(errors.image);
+        }else{
+            $('#' + 'image-error').hide()
+        }
+        if (errors.main_heading){
+            $('#' + 'main_heading-error').text(errors.main_heading);
+        }else{
+            $('#' + 'main_heading-error').hide()
+        }
+        if (errors.sub_heading){
+            $('#' + 'sub_heading-error').text(errors.sub_heading);
+        }else{
+            $('#' + 'sub_heading-error').hide()
+        }
+    }
+</script>
+
+
+    {% endblock %}
