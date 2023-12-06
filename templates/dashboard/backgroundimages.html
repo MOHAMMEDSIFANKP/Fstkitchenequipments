@@ -13,9 +13,15 @@
         {% include "dashboard/navbar.html" %}
         <!--  Header End -->
         <div class="container" style="padding-top: 70px;">
+           <div class="d-flex justify-content-between align-items-center mb-4">
             <a type="button" class="btn btn-primary w-60" data-bs-toggle="modal" data-bs-target="#addmodal">
                 <i title="Add Category" class="fa fa-plus">Add Images</i>
             </a>
+            <div class="d-flex justify-content-between align-items-center">
+                <input type="search" id="search-input" class="search-focus py-2 ps-3 pe-3 shadow bg-white" placeholder="Search"
+                    style="border-radius: 20px; border-color: #b9b9b9;">
+            </div>
+           </div>
             {{form.non_field_errors }}
             {{form.field_error }}
             <div class="d-flex justify-content-between align-items-center ">
@@ -28,9 +34,10 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="modal-body" >
+                            <div class="modal-body">
 
-                                <form action="{%url 'BackgroudImages'%}" id="backgroudimages-forms" enctype="multipart/form-data" method="POST">
+                                <form action="{%url 'BackgroudImages'%}" id="backgroudimages-forms"
+                                    enctype="multipart/form-data" method="POST">
                                     {% csrf_token %}
                                     <div style="width: 100px;"
                                         class="card-header category-img position-relative overflow-hidden bg-transparent border p-0">
@@ -65,22 +72,21 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <p>search</p>
-                </div>
+              
             </div>
             <div>
                 <div class="col-12">
                     <div class="card recent-sales overflow-auto">
                         <div class="card-body">
 
-                            <table class="table table-borderless datatable refresh">
+                            <table class="table table-borderless datatable refresh" id="search-results">
                                 <thead>
                                     <tr>
                                         <th scope="col">id</th>
                                         <th scope="col">image</th>
                                         <th scope="col">Sub heading</th>
                                         <th scope="col">Main heading</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
 
@@ -99,11 +105,11 @@
                                     <td>
                                         <!-- Button trigger modal -->
                                         <a type="button" class="fs-4 btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#confirmEdit{{forloop.counter}}">
+                                            data-bs-target="#updatemodal{{bgimage.id}}">
                                             <i title="" class="fa fa-edit">edit</i>
                                         </a>
                                         <!--Edit Modal -->
-                                        <div class="modal fade" id="confirmEdit{{forloop.counter}}" tabindex="-1"
+                                        <div class="modal fade" id="updatemodal{{bgimage.id}}" tabindex="-1"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
 
@@ -115,10 +121,13 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form method="PUT" action="{%url 'update_item' bgimage.id%}"
-                                                            enctype="multipart/form-data" id="backgroudimagesupdated-forms" >
+                                                        <form method="post" action="{% url 'BackgroudImages' %}"
+                                                            enctype="multipart/form-data"
+                                                            id="backgroudimagesupdated-forms{{bgimage.id}}">
                                                             {% csrf_token %}
-
+                                                            <input type="hidden" name="id" id="bgimage_id"
+                                                                value="{{bgimage.id}}">
+                                                            <input type="hidden" name="methods" value="put">
                                                             <div style="width: 100px;"
                                                                 class="card-header category-img position-relative overflow-hidden bg-transparent border p-0">
                                                                 <img class="img-fluid w-100"
@@ -129,29 +138,35 @@
                                                                 <input name="image" type="file"
                                                                     accept="image/png, image/jpeg, image/svg"
                                                                     class="form-control" id="image-inputs" />
-                                                                <small id="image-errors"
+                                                                <small id="image-error{{bgimage.id}}"
                                                                     class="text-danger text-center"></small>
                                                             </div>
 
                                                             <div class="form-outline mb-4">
-                                                                <input name='sub_heading' value="{{bgimage.sub_heading}}"
-                                                                    type="text" id="form3Example3cg"
+                                                                <input name='sub_heading'
+                                                                    value="{{bgimage.sub_heading}}" type="text"
+                                                                    id="form3Example3cg"
                                                                     class="form-control form-control-lg" />
-                                                                <label class="form-label" for="form3Example3cg">Category
-                                                                    name</label>
+                                                                <label class="form-label" for="form3Example3cg">Sub
+                                                                    heading</label>
+                                                                <small id="sub_heading-error{{bgimage.id}}"
+                                                                    class="text-danger text-center"></small>
                                                             </div>
                                                             <div class="form-outline mb-4">
                                                                 <input name='main_heading'
                                                                     value="{{bgimage.main_heading}}" type="text"
                                                                     id="form3Example3cg"
                                                                     class="form-control form-control-lg" />
-                                                                <label class="form-label"
-                                                                    for="form3Example3cg">Discription</label>
+                                                                <label class="form-label" for="form3Example3cg">Main
+                                                                    heading</label>
+                                                                <small id="main_heading-error{{bgimage.id}}"
+                                                                    class="text-danger text-center"></small>
                                                             </div>
                                                             <div class="d-flex justify-content-center">
                                                                 <button type="submit"
-                                                                    class="btn btn-danger btn-lg gradient-custom-4 w-50 text-light"
-                                                                    type="submit">Save Changes</button>
+                                                                    class="btn btn-danger btn-lg gradient-custom-4 w-50 text-light bgimage-update-btn"
+                                                                    data-bgimage-id="{{bgimage.id}}" type="submit">Save
+                                                                    Changes</button>
                                                             </div>
 
                                                         </form>
@@ -163,34 +178,42 @@
                                         <!-- Button trigger modal -->
 
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal{{forloop.counter}}">
+                                            data-bs-target="#deletemodal{{bgimage.id}}">
                                             Delete
                                         </button>
-                                    </td>
-                                    <!-- Modal  for delete the Category -->
-                                    <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    delete Category {{c.categories }}
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <form action="">
-
-                                                        <button type="submit" class="btn btn-danger">Confirm</button>
-                                                    </form>
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
+                                        <!-- Modal  for delete the Category -->
+                                        <div class="modal fade" id="deletemodal{{bgimage.id}}" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body ">
+                                                        <p style="font-size: large;">Are you sure you want to delete
+                                                            <span class="text-danger"
+                                                                style="font-weight: bold;">'{{bgimage.main_heading}}'</span></p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form method="POST" action="{%url 'BackgroudImages' %}"
+                                                            id="deletefoms-forms{{bgimage.id}}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="id" id="delete_id"
+                                                                value="{{bgimage.id}}">
+                                                            <input type="hidden" name="methods" value="delete">
+                                                            <button type="submit"
+                                                                class="btn btn-danger">Confirm</button>
+                                                        </form>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </td>
+
 
                                     </td>
                                     <!--deleting ended-->
@@ -208,55 +231,149 @@
         </div>
     </div>
 
-<!-- Include jQuery library -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        $('#backgroudimages-forms').submit(function(e) {
-            e.preventDefault();
-            
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: new FormData(this),
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    $('.refresh').load(location.href + " .refresh");
-                    if (response.success) {
-                        $('#addmodal').modal('hide');
-                        $('#backgroudimages-forms')[0].reset();
-                    } else {
-                        updateErrorMessages(response.errors);
+    <script>
+        // Add Function
+        $(document).ready(function () {
+            $('#backgroudimages-forms').submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $('.refresh').load(location.href + " .refresh");
+                        if (response.success) {
+                            $('#addmodal').modal('hide');
+                            $('#backgroudimages-forms')[0].reset();
+                        } else {
+                            updateErrorMessages(response.errors);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Something wrong')
                     }
-                },
-                error: function(xhr, status, error) {
-                    alert('Something wrong')
-                }
+                });
             });
         });
+
+        function updateErrorMessages(errors) {
+            if (errors.image) {
+                $('#' + 'image-error').text(errors.image);
+            } else {
+                $('#' + 'image-error').hide()
+            }
+            if (errors.main_heading) {
+                $('#' + 'main_heading-error').text(errors.main_heading);
+            } else {
+                $('#' + 'main_heading-error').hide()
+            }
+            if (errors.sub_heading) {
+                $('#' + 'sub_heading-error').text(errors.sub_heading);
+            } else {
+                $('#' + 'sub_heading-error').hide()
+            }
+        }
+        // Updating Function
+        $(document).ready(function () {
+            $(document).on('submit', '[id^="backgroudimagesupdated-forms"]', function (e) {
+                e.preventDefault();
+
+                var id = $(this).find('#bgimage_id').val();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $('.refresh').load(location.href + " .refresh");
+                            $('#updatemodal' + id).modal('hide');
+                            $('#backgroudimagesupdated-forms' + id)[0].reset();
+                        } else {
+                            if (response.errors.image) {
+                                $('#' + 'image-error' + id).text(response.errors.image);
+                            } else {
+                                $('#' + 'image-error' + id).hide()
+                            }
+                            if (response.errors.main_heading) {
+                                $('#' + 'main_heading-error' + id).text(response.errors.main_heading);
+                            } else {
+                                $('#' + 'main_heading-error' + id).hide()
+                            }
+                            if (response.errors.sub_heading) {
+                                $('#' + 'sub_heading-error' + id).text(response.errors.sub_heading);
+                            } else {
+                                $('#' + 'sub_heading-error' + id).hide()
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Something wrong');
+                    }
+                });
+            });
+
+        });
+
+        // Deleting Function
+        $(document).ready(function () {
+            $(document).on('submit', '[id^="deletefoms-forms"]', function (e) {
+                e.preventDefault();
+
+                var id = $(this).find('#delete_id').val();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $('.refresh').load(location.href + " .refresh");
+                            $('#deletemodal' + id).modal('hide');
+                            $('#backgroudimagesupdated-forms' + id)[0].reset();
+                        } else {
+                            alert('Something wrong');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Something wrong');
+                    }
+                });
+            });
+
+        });
+        // Searching function
+
+        $(document).ready(function () {
+        $("#search-input").on("keyup", function (e) {
+            if (e.keyCode === 13) {
+                Search();
+            } else {
+                clearTimeout($(this).data("timeout"));
+                $(this).data("timeout", setTimeout(Search, 500)); 
+            }
+        });
+
+        function Search() {
+            var query = $("#search-input").val();
+            $.ajax({
+                type: "GET",
+                url: "{%url 'BackgroudImages'%}",
+                data: { "query": query , "methods":'search'},
+                success: function (data) {
+                    $("#search-results").html(data);
+                }
+            });
+        }
+        
     });
-
-    function updateErrorMessages(errors) {
-        console.log(errors);
-        if (errors.image){
-            $('#' + 'image-error').text(errors.image);
-        }else{
-            $('#' + 'image-error').hide()
-        }
-        if (errors.main_heading){
-            $('#' + 'main_heading-error').text(errors.main_heading);
-        }else{
-            $('#' + 'main_heading-error').hide()
-        }
-        if (errors.sub_heading){
-            $('#' + 'sub_heading-error').text(errors.sub_heading);
-        }else{
-            $('#' + 'sub_heading-error').hide()
-        }
-    }
-</script>
-
+    </script>
 
     {% endblock %}

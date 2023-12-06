@@ -6,6 +6,5 @@ urlpatterns = [
     path('signout/',CustomLogoutView.as_view(), name='CustomLogoutView'),
     
     path('backgroudimages/',BackgroudImages.as_view(), name='BackgroudImages'),
-    path('item/<int:pk>/', BackgroudImages.as_view(), name='update_item'),
 
 ]

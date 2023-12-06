@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate,login
 from .forms import *
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 # Create your views here.
 
@@ -47,35 +48,41 @@ class CustomLogoutView(CustomLoginRequiredAdmin,LogoutView):
 class DashboardHome(CustomLoginRequiredAdmin,TemplateView):
     template_name = 'dashboard/dashboard.html'
 
-class BackgroudImages(View):
-    forms = BgImagesForms()
+class BackgroudImages(FormView,CustomLoginRequiredAdmin):
     template_name = 'dashboard/backgroundimages.html'
-    
+    form_class = BgImagesForms
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bgimages_data'] = BgImages.objects.all()
+        return context
+
     def get(self, request, *args, **kwargs):
-        conntext = {
-            'bgimages_data' : BgImages.objects.all(),
-        }
-        return render(request, self.template_name, {'form': self.forms,**conntext})
+        if request.GET.get('methods') == 'search':
+            query = request.GET.get('query', '')
+            instance_data = BgImages.objects.filter(Q(sub_heading__icontains=query) | Q(main_heading__icontains=query))
+            return render(request, 'dashboard/search_data.html', {'bgimages_data': instance_data})
+
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.forms = BgImagesForms(request.POST, request.FILES)
+        pk = request.POST.get('id')
+        methods = request.POST.get('methods')
 
-        if self.forms.is_valid():
-            self.forms.save()
+        if pk and methods == 'put':
+            instance = get_object_or_404(BgImages, pk=pk)
+            form = BgImagesForms(request.POST, request.FILES, instance=instance)
+        elif pk and methods == 'delete':
+            instance = get_object_or_404(BgImages, pk=pk)
+            instance.delete()
             return JsonResponse({'success': True})
         else:
-            return JsonResponse({'success': False, 'errors': self.forms.errors})
+            form = BgImagesForms(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
         
-    def put(self, request, *args, **kwargs):
-        pk = kwargs.get('pk')
-        print(pk,'pk')
-        bg_image = get_object_or_404(BgImages, pk=pk)
-        self.forms = BgImagesForms(request.POST, request.FILES, instance=bg_image)
 
-        if self.forms.is_valid():
-            self.forms.save()
-            return JsonResponse({'success': True})
-        else:
-            errors = {field: self.forms[field].errors for field in self.forms.fields}
-            return JsonResponse({'success': False, 'errors': self.forms.errors})
-        return
