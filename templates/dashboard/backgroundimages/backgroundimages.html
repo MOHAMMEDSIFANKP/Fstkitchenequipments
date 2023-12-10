@@ -3,7 +3,7 @@
 {% block title %}Backgroud Images | Dashboard{% endblock %}
 {% block body %}
 <!--  Body Wrapper -->
-<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+<div class="page-wrapper" style='background-color: white;' id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
     <!-- Sidebar Start -->
     {% include "dashboard/sidebar.html" %}
@@ -13,15 +13,31 @@
         {% include "dashboard/navbar.html" %}
         <!--  Header End -->
         <div class="container" style="padding-top: 70px;">
-           <div class="d-flex justify-content-between align-items-center mb-4">
-            <a type="button" class="btn btn-primary w-60" data-bs-toggle="modal" data-bs-target="#addmodal">
-                <i title="Add Category" class="fa fa-plus">Add</i>
-            </a>
-            <div class="d-flex justify-content-between align-items-center">
-                <input type="search" id="search-input" class="search-focus py-2 ps-3 pe-3 shadow bg-white" placeholder="Search"
-                    style="border-radius: 20px; border-color: #b9b9b9;">
+            <div class="flex-w flex-sb-m p-b-52">
+                <div class="flex-w flex-l-m m-tb-10" data-bs-toggle="modal" data-bs-target="#addmodal">
+                    <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 ">
+                         Add
+                    </div>
+                </div>
+                <div class="flex-w flex-c-m m-tb-10">
+                    <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+                        <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+                        <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+                        Search
+                    </div>
+                </div>
+                
+                <!-- Search product -->
+                <div class="dis-none panel-search w-full p-t-10 p-b-15">
+                    <div class="bor8 dis-flex p-l-15">
+                        <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                            <i class="zmdi zmdi-search"></i>
+                        </button>
+    
+                        <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="search" id="search-input"  placeholder="Search">
+                    </div>	
+                </div>
             </div>
-           </div>
             {{form.non_field_errors }}
             {{form.field_error }}
             <div class="d-flex justify-content-between align-items-center ">
@@ -40,27 +56,29 @@
                                     enctype="multipart/form-data" method="POST">
                                     {% csrf_token %}
                                     <div style="width: 100px;"
-                                        class="card-header category-img position-relative overflow-hidden bg-transparent border p-0">
-                                    </div>
-                                    <div class="form-outline mb-4">
+                                    class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                    <img class="img-fluid w-100"
+                                        src="" alt=""  id="image-preview" style="display: none;">
+                                     </div>
+                                    <div class="form-outline mb-2">
                                         <input name="image" type="file" accept="image/png, image/jpeg, image/svg"
-                                            class="form-control" id="image-input" />
+                                            class="form-control" id="image-input" onchange="previewImage()"/>
                                         <small id="image-error" class="text-danger text-center "></small>
                                         {{ form.image.errors }}
                                     </div>
-                                    <div class="form-outline mb-4">
-                                        <input name='sub_heading' type="text" id="form3Example3cg"
-                                            class="form-control form-control-lg" />
-                                        <label class="form-label" for="form3Example3cg">Sub heading</label>
-                                        <small id="sub_heading-error" class="text-danger ps-2 text-center"></small>
-                                        {{ form.sub_heading.errors }}
-                                    </div>
-                                    <div class="form-outline mb-4">
+                                    <div class="form-outline mb-2">
+                                        <label class="form-label" for="form3Example3cg">Main heading</label>
                                         <input name='main_heading' type="text" id="form3Example3cg"
                                             class="form-control form-control-lg" />
-                                        <label class="form-label" for="form3Example3cg">Main heading</label>
                                         <small id="main_heading-error" class="text-danger ps-2 text-center"></small>
                                         {{ form.main_heading.errors }}
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="form3Example3cg">Sub heading</label>
+                                        <input name='sub_heading' type="text" id="form3Example3cg"
+                                            class="form-control form-control-lg" />
+                                        <small id="sub_heading-error" class="text-danger ps-2 text-center"></small>
+                                        {{ form.sub_heading.errors }}
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit"
@@ -84,8 +102,8 @@
                                     <tr>
                                         <th scope="col">id</th>
                                         <th scope="col">image</th>
-                                        <th scope="col">Sub heading</th>
                                         <th scope="col">Main heading</th>
+                                        <th scope="col">Sub heading</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
@@ -99,12 +117,12 @@
                                             <img class="w-100" src=" {{bgimage.image.url}} " alt="">
                                         </div>
                                     </td>
-                                    <td> {{bgimage.sub_heading}} </td>
                                     <td> {{bgimage.main_heading}} </td>
+                                    <td> {{bgimage.sub_heading}} </td>
                                     <!-- edit -->
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <a type="button" class="fs-4 btn btn-warning" data-bs-toggle="modal"
+                                        <a type="button" class="fs-4 btn hov-btn3 border" data-bs-toggle="modal"
                                             data-bs-target="#updatemodal{{bgimage.id}}">
                                             <i title="" class="fa fa-edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -137,32 +155,31 @@
                                                                     src="{{bgimage.image.url}} " alt="">
                                                             </div>
 
-                                                            <div class="form-outline mb-4">
+                                                            <div class="form-outline mb-2">
                                                                 <input name="image" type="file"
                                                                     accept="image/png, image/jpeg, image/svg"
                                                                     class="form-control" id="image-inputs" />
                                                                 <small id="image-error{{bgimage.id}}"
                                                                     class="text-danger text-center"></small>
                                                             </div>
-
-                                                            <div class="form-outline mb-4">
-                                                                <input name='sub_heading'
-                                                                    value="{{bgimage.sub_heading}}" type="text"
-                                                                    id="form3Example3cg"
-                                                                    class="form-control form-control-lg" />
-                                                                <label class="form-label" for="form3Example3cg">Sub
+                                                            <div class="form-outline mb-2">
+                                                                <label class="form-label" for="form3Example3cg">Main
                                                                     heading</label>
-                                                                <small id="sub_heading-error{{bgimage.id}}"
-                                                                    class="text-danger text-center"></small>
-                                                            </div>
-                                                            <div class="form-outline mb-4">
                                                                 <input name='main_heading'
                                                                     value="{{bgimage.main_heading}}" type="text"
                                                                     id="form3Example3cg"
                                                                     class="form-control form-control-lg" />
-                                                                <label class="form-label" for="form3Example3cg">Main
-                                                                    heading</label>
                                                                 <small id="main_heading-error{{bgimage.id}}"
+                                                                    class="text-danger text-center"></small>
+                                                            </div>
+                                                            <div class="form-outline mb-2">
+                                                                <label class="form-label" for="form3Example3cg">Sub
+                                                                    heading</label>
+                                                                <input name='sub_heading'
+                                                                    value="{{bgimage.sub_heading}}" type="text"
+                                                                    id="form3Example3cg"
+                                                                    class="form-control form-control-lg" />
+                                                                <small id="sub_heading-error{{bgimage.id}}"
                                                                     class="text-danger text-center"></small>
                                                             </div>
                                                             <div class="d-flex justify-content-center">
@@ -180,7 +197,7 @@
 
                                         <!-- Button trigger modal -->
 
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        <button type="button" class="btn hov-btn3 border" data-bs-toggle="modal"
                                             data-bs-target="#deletemodal{{bgimage.id}}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -198,9 +215,9 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body ">
-                                                        <p style="font-size: large;">Are you sure you want to delete
+                                                        <p style="font-size: medium;">Are you sure you want to delete
                                                             <span class="text-danger"
-                                                                style="font-weight: bold;">'{{bgimage.main_heading}}'</span></p>
+                                                                style="font-weight: bold;">'{{bgimage.main_heading}}'</span>   ?</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <form method="POST" action="{%url 'BackgroudImages' %}"
@@ -212,25 +229,20 @@
                                                             <button type="submit"
                                                                 class="btn btn-danger">Confirm</button>
                                                         </form>
-                                                        <button type="button" class="btn btn-secondary"
+                                                        <button type="button" class="btn hov-btn3 border"
                                                             data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
-
-
                                     </td>
                                     <!--deleting ended-->
-
                                 </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
-
                         </div>
-
                     </div>
                 </div><!-- End Recent Sales -->
             </div>
@@ -271,17 +283,17 @@
             if (errors.image) {
                 $('#' + 'image-error').text(errors.image);
             } else {
-                $('#' + 'image-error').hide()
+                $('#' + 'image-error').text('')
             }
             if (errors.main_heading) {
                 $('#' + 'main_heading-error').text(errors.main_heading);
             } else {
-                $('#' + 'main_heading-error').hide()
+                $('#' + 'main_heading-error').text('')
             }
             if (errors.sub_heading) {
                 $('#' + 'sub_heading-error').text(errors.sub_heading);
             } else {
-                $('#' + 'sub_heading-error').hide()
+                $('#' + 'sub_heading-error').text('')
             }
         }
         // Updating Function
@@ -305,17 +317,17 @@
                             if (response.errors.image) {
                                 $('#' + 'image-error' + id).text(response.errors.image);
                             } else {
-                                $('#' + 'image-error' + id).hide()
+                                $('#' + 'image-error' + id).text('')
                             }
                             if (response.errors.main_heading) {
                                 $('#' + 'main_heading-error' + id).text(response.errors.main_heading);
                             } else {
-                                $('#' + 'main_heading-error' + id).hide()
+                                $('#' + 'main_heading-error' + id).text('')
                             }
                             if (response.errors.sub_heading) {
                                 $('#' + 'sub_heading-error' + id).text(response.errors.sub_heading);
                             } else {
-                                $('#' + 'sub_heading-error' + id).hide()
+                                $('#' + 'sub_heading-error' + id).text('')
                             }
                         }
                     },
@@ -380,6 +392,20 @@
         }
         
     });
+
+     // Image-show
+     function previewImage() {
+        var input = document.getElementById('image-input');
+        var preview = document.getElementById('image-preview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
     </script>
 
     {% endblock %}

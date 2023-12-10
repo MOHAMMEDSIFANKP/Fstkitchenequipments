@@ -2,8 +2,8 @@
     <tr>
         <th scope="col">id</th>
         <th scope="col">image</th>
-        <th scope="col">Sub heading</th>
         <th scope="col">Main heading</th>
+        <th scope="col">Sub heading</th>
         <th scope="col">Actions</th>
     </tr>
 </thead>
@@ -17,12 +17,12 @@
             <img class="w-100" src=" {{bgimage.image.url}} " alt="">
         </div>
     </td>
-    <td> {{bgimage.sub_heading}} </td>
     <td> {{bgimage.main_heading}} </td>
+    <td> {{bgimage.sub_heading}} </td>
     <!-- edit -->
     <td>
         <!-- Button trigger modal -->
-        <a type="button" class="fs-4 btn btn-warning" data-bs-toggle="modal"
+        <a type="button" class="fs-4 btn hov-btn3 border" data-bs-toggle="modal"
             data-bs-target="#updatemodal{{bgimage.id}}">
             <i title="" class="fa fa-edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -55,32 +55,31 @@
                                     src="{{bgimage.image.url}} " alt="">
                             </div>
 
-                            <div class="form-outline mb-4">
+                            <div class="form-outline mb-2">
                                 <input name="image" type="file"
                                     accept="image/png, image/jpeg, image/svg"
                                     class="form-control" id="image-inputs" />
                                 <small id="image-error{{bgimage.id}}"
                                     class="text-danger text-center"></small>
                             </div>
-
-                            <div class="form-outline mb-4">
-                                <input name='sub_heading'
-                                    value="{{bgimage.sub_heading}}" type="text"
-                                    id="form3Example3cg"
-                                    class="form-control form-control-lg" />
-                                <label class="form-label" for="form3Example3cg">Sub
+                            <div class="form-outline mb-2">
+                                <label class="form-label" for="form3Example3cg">Main
                                     heading</label>
-                                <small id="sub_heading-error{{bgimage.id}}"
-                                    class="text-danger text-center"></small>
-                            </div>
-                            <div class="form-outline mb-4">
                                 <input name='main_heading'
                                     value="{{bgimage.main_heading}}" type="text"
                                     id="form3Example3cg"
                                     class="form-control form-control-lg" />
-                                <label class="form-label" for="form3Example3cg">Main
-                                    heading</label>
                                 <small id="main_heading-error{{bgimage.id}}"
+                                    class="text-danger text-center"></small>
+                            </div>
+                            <div class="form-outline mb-2">
+                                <label class="form-label" for="form3Example3cg">Sub
+                                    heading</label>
+                                <input name='sub_heading'
+                                    value="{{bgimage.sub_heading}}" type="text"
+                                    id="form3Example3cg"
+                                    class="form-control form-control-lg" />
+                                <small id="sub_heading-error{{bgimage.id}}"
                                     class="text-danger text-center"></small>
                             </div>
                             <div class="d-flex justify-content-center">
@@ -98,7 +97,7 @@
 
         <!-- Button trigger modal -->
 
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+        <button type="button" class="btn hov-btn3 border" data-bs-toggle="modal"
             data-bs-target="#deletemodal{{bgimage.id}}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
@@ -116,9 +115,9 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body ">
-                        <p style="font-size: large;">Are you sure you want to delete
+                        <p style="font-size: medium;">Are you sure you want to delete
                             <span class="text-danger"
-                                style="font-weight: bold;">'{{bgimage.main_heading}}'</span></p>
+                                style="font-weight: bold;">'{{bgimage.main_heading}}'</span>   ?</p>
                     </div>
                     <div class="modal-footer">
                         <form method="POST" action="{%url 'BackgroudImages' %}"
@@ -130,18 +129,15 @@
                             <button type="submit"
                                 class="btn btn-danger">Confirm</button>
                         </form>
-                        <button type="button" class="btn btn-secondary"
+                        <button type="button" class="btn hov-btn3 border"
                             data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
     </td>
-
-
     </td>
     <!--deleting ended-->
-
 </tr>
 {% endfor %}
 </tbody>

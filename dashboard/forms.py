@@ -40,12 +40,14 @@ class BgImagesForms(forms.ModelForm):
         sub_heading = self.cleaned_data["sub_heading"]
         if not sub_heading or not sub_heading.strip():
             raise ValidationError('This field is required')
+        sub_heading = sub_heading.upper()
         return sub_heading
     
     def clean_main_heading(self):
         main_heading = self.cleaned_data["main_heading"]
         if not main_heading or not main_heading.strip():
             raise ValidationError('This field is required')
+        main_heading = main_heading.upper()
         return main_heading
     
 class CategoryForms(forms.ModelForm):

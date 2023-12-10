@@ -9,10 +9,9 @@ class Home(ListView):
 
     def get_queryset(self):
         bg_images = BgImages.objects.all()
-        categoryies_data = Categories.objects.all()
-        return {'bg_images': bg_images,'categoryies_data' : categoryies_data}
+        category_data = Categories.objects.all()
+        return {'bg_images': bg_images,'category_data' : category_data}
    
-
 class Category_User(TemplateView):
     template_name = 'user/category_page.html'
 
