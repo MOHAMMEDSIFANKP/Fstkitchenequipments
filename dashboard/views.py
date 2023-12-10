@@ -30,10 +30,16 @@ class Signin(FormView):
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
         user = authenticate(username=username, password=password)
-        
+
         if user is not None and user.is_superuser:
             login(self.request, user)
-            return response 
+            return JsonResponse({'success': True})
+        
+        
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        return JsonResponse({'success': False, 'errors': form.errors})
+    
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_superuser:
@@ -49,19 +55,19 @@ class DashboardHome(CustomLoginRequiredAdmin,TemplateView):
     template_name = 'dashboard/dashboard.html'
 
 class BackgroudImages(FormView,CustomLoginRequiredAdmin):
-    template_name = 'dashboard/backgroundimages.html'
+    template_name = 'dashboard/backgroundimages/backgroundimages.html'
     form_class = BgImagesForms
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['bgimages_data'] = BgImages.objects.all()
         return context
-
+    
     def get(self, request, *args, **kwargs):
         if request.GET.get('methods') == 'search':
             query = request.GET.get('query', '')
             instance_data = BgImages.objects.filter(Q(sub_heading__icontains=query) | Q(main_heading__icontains=query))
-            return render(request, 'dashboard/search_data.html', {'bgimages_data': instance_data})
+            return render(request, 'dashboard/backgroundimages/search_data.html', {'bgimages_data': instance_data})
 
         return super().get(request, *args, **kwargs)
 
@@ -86,3 +92,40 @@ class BackgroudImages(FormView,CustomLoginRequiredAdmin):
             return JsonResponse({'success': False, 'errors': form.errors})
         
 
+class Category(FormView,CustomLoginRequiredAdmin):
+    template_name = 'dashboard/category/category.html'
+    form_class = CategoryForms
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category_data'] = Categories.objects.all()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('methods') == 'search':
+            query = request.GET.get('query', '')
+            instance_data = Categories.objects.filter(Q(sub_heading__icontains=query) | Q(main_heading__icontains=query))
+            return render(request, 'dashboard/category/search_data.html', {'category_data': instance_data})
+
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        pk = request.POST.get('id')
+        methods = request.POST.get('methods')
+
+        if pk and methods == 'put':
+            instance = get_object_or_404(Categories, pk=pk)
+            form = CategoryForms(request.POST, request.FILES, instance=instance)
+        elif pk and methods == 'delete':
+            instance = get_object_or_404(Categories, pk=pk)
+            instance.delete()
+            return JsonResponse({'success': True})
+        else:
+            form = CategoryForms(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+        

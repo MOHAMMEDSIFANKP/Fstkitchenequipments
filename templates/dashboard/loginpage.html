@@ -16,22 +16,24 @@
                 </a>
                 {{ form.non_field_errors }}
                 {{form.field_error }}
-                <form method='POST' action="{%url 'Signin'%}">
+                <small id="non-field-error" class="text-danger text-center"></small>
+                <form method='POST' action="{%url 'Signin'%}" id="Login-forms">
                   {% csrf_token %}
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Username</label>
                     <input type="text" name='username' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                     {{ form.username.errors }}
+                    <small id="username-error" class="text-danger text-center"></small>
                   </div>
                   <div class="mb-4">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <input type="password" name='password' class="form-control" id="exampleInputPassword1">
                     {{ form.password.errors }}
+                    <small id="password-error" class="text-danger text-center"></small>
                   </div>
                   <div class="d-flex align-items-center justify-content-between mb-4">
                    
                   <button type='submit' class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign In</button>
-                 
                 </form>
               </div>
             </div>
@@ -40,4 +42,49 @@
       </div>
     </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+      // Add Function
+      $(document).ready(function () {
+            $('#Login-forms').submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                          window.location.href = "{% url 'DashboardHome' %}";
+                        } else {
+                          console.log(response.errors.__all__);
+                            updateErrorMessages(response.errors);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Something wrong')
+                    }
+                });
+            });
+        });
+        function updateErrorMessages(errors) {
+            if (errors.username) {
+                $('#' + 'username-error').text(errors.username);
+            } else {
+                $('#' + 'username-error').hide()
+            }
+            if (errors.password) {
+                $('#' + 'password-error').text(errors.password);
+            } else {
+                $('#' + 'password-error').hide()
+            }
+            if (errors.__all__){
+              $('#' + 'non-field-error').text(errors.__all__);
+            }else{
+              $('#' + 'non-field-error').text(errors.__all__);
+            }
+           
+        }
+  </script>
 {% endblock body %}

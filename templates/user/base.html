@@ -78,12 +78,20 @@
 {% include "user/footer.html" %}
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-	  setInterval(function () {
-		const container = document.querySelector('.scroll-container');
-		container.scrollLeft += container.clientWidth;
-		
-	  }, 3000);
-	});
+    const container = document.querySelector('.scroll-container');
+    let scrollDirection = 1; 
+
+    setInterval(function () {
+        container.scrollLeft += scrollDirection * container.clientWidth;
+
+        // Change direction when reaching the end
+        if (container.scrollLeft === 0 || container.scrollLeft === (container.scrollWidth - container.clientWidth)) {
+            scrollDirection *= -1;
+        }
+
+    }, 3000);
+});
+
   </script>
   
 <!--===============================================================================================-->	
