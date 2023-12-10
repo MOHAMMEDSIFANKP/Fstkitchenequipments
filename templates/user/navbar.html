@@ -16,12 +16,12 @@
 					<!-- Menu desktop -->
 					<div class="menu-desktop"style="display: flex !important; justify-content: center !important; align-items: center !important; width: 100%;">
 						<ul class="main-menu">
-							<li class="active-menu">
+							<li class="{% if request.resolver_match.url_name == 'Home' %}active-menu{% endif %}">
 								<a href="{%url 'Home'%}">Home</a>
 							</li>
 
-							<li>
-								<a href="{%url 'Category_User'%}">Products</a>
+							<li class='{% if request.resolver_match.url_name == 'Category_List' %}active-menu{% endif %} '>
+								<a href="{%url 'Category_List'%}">Products</a>
 							</li>
 
 							<li >
@@ -45,7 +45,7 @@
 		<div class="wrap-header-mobile">
 			<!-- Logo moblie -->		
 			<div class="logo-mobile">
-				<a href="index.html"><img src="{% static "images/logos/logo.png" %}" style="max-width: 150px; max-height: max-content;" alt="IMG-LOGO"></a>
+				<a href="{%url 'Home'%}"><img src="{% static "images/logos/logo.png" %}" style="max-width: 150px; max-height: max-content;" alt="IMG-LOGO"></a>
 			</div>
 
 			<!-- Button show menu -->
@@ -59,19 +59,12 @@
 
 		<!-- Menu Mobile -->
 		<div class="menu-mobile">
-			
-
 			<ul class="main-menu-m">
 				<li>
 					<a href="{%url 'Home'%}">Home</a>
-					
-					<span class="arrow-main-menu-m">
-						<i class="fa fa-angle-right" aria-hidden="true"></i>
-					</span>
 				</li>
-
-				<li>
-					<a href="{%url 'Category_User'%}">Products</a>
+				<li class=''>
+					<a href="{%url 'Category_List'%}">Products</a>
 				</li>
 
 				<li>

@@ -253,6 +253,7 @@
                         if (response.success) {
                             $('#addmodal').modal('hide');
                             $('#Category-forms')[0].reset();
+                            $("#image-preview").css("display", "none");
                         } else {
                             updateErrorMessages(response.errors);
                         }

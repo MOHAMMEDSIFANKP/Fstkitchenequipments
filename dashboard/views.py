@@ -136,7 +136,7 @@ class Product(CustomLoginRequiredAdmin,FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['products_data'] = Products.objects.all()
-        context['category_data'] = Categories.objects.all()
+        context['category_data'] = Categories.objects.all().order_by('name')
         return context
 
     def get(self, request, *args, **kwargs):

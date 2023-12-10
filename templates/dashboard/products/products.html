@@ -48,7 +48,7 @@
 						<div class="mb-3">
 							<div class="flex-w p-t-4 m-r--5">
 								{% for category in category_data %}
-                                <a class="category-link flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5">
+                                <a href="#" class="category-link flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5">
 									{{category.name}}
 								</a>
                                 {% endfor %}
@@ -423,44 +423,7 @@
         
         });
 
-        $(document).ready(function () {
-            // Handle click event for category links
-            $(".category-link").on("click", function (e) {
-                e.preventDefault(); // Prevent the default link behavior
-        
-                // Toggle selected class for the clicked category link
-                $(this).toggleClass("selected");
-        
-                // Call the Search function with the selected category
-                Search();
-            });
-        
-            // Handle keyup event for search input
-            $("#search-input").on("keyup", function (e) {
-                if (e.keyCode === 13) {
-                    Search();
-                } else {
-                    clearTimeout($(this).data("timeout"));
-                    $(this).data("timeout", setTimeout(Search, 500));
-                }
-            });
-        
-            function Search() {
-                var query = $("#search-input").val();
-                var selectedCategory = $(".category-link").data("category");
-                console.log(selectedCategory,'daxo');
-                // Use the selectedCategory in your AJAX request
-                // $.ajax({
-                //     type: "GET",
-                //     url: "{% url 'Product' %}",
-                //     data: { "query": query, "methods": "search", "category": selectedCategory },
-                //     success: function (data) {
-                //         $("#search-results").html(data);
-                //     }
-                // });
-            }
-        });
-        
+
     // Image-show
     function previewImage() {
         var input = document.getElementById('image-input');
