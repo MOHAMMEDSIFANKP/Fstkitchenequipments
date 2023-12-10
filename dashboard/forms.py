@@ -71,4 +71,37 @@ class CategoryForms(forms.ModelForm):
         name = self.cleaned_data["name"]
         if not name or not name.strip():
             raise ValidationError('This field is required.')
+        name = name.upper()
+        return name
+
+class ProductFroms(forms.ModelForm):
+    class Meta:
+        model = Products
+        fields = ('image','category','name')
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        if not image:
+            raise ValidationError('Please upload a image')  
+        try:
+            with Image.open(image) as img:
+                allowed_formats = ['PNG', 'JPEG', 'JPG', 'WEBP', 'SVG']
+                if img.format.upper() not in allowed_formats:
+                    raise ValidationError('Invalid image format. Please upload a valid image.')
+
+        except Exception as e:
+            raise ValidationError('Error reading the image file.')
+        return image
+    
+    def clean_category(self):
+        category = self.cleaned_data["category"]
+        if not category:
+            raise ValidationError('This field is required.')
+        return category
+    
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        if not name or not name.strip():
+            raise ValidationError('This field is required.')
+        name = name.title()
         return name

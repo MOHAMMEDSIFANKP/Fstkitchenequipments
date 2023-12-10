@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import *
-from dashboard.models import BgImages
+from dashboard.models import *
 # Create your views here.
 
 class Home(ListView):
@@ -9,10 +9,11 @@ class Home(ListView):
 
     def get_queryset(self):
         bg_images = BgImages.objects.all()
-        return {'bg_images': bg_images}
+        categoryies_data = Categories.objects.all()
+        return {'bg_images': bg_images,'categoryies_data' : categoryies_data}
    
 
-class Category(TemplateView):
+class Category_User(TemplateView):
     template_name = 'user/category_page.html'
 
 class sifan(TemplateView):

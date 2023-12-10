@@ -54,7 +54,7 @@ class CustomLogoutView(CustomLoginRequiredAdmin,LogoutView):
 class DashboardHome(CustomLoginRequiredAdmin,TemplateView):
     template_name = 'dashboard/dashboard.html'
 
-class BackgroudImages(FormView,CustomLoginRequiredAdmin):
+class BackgroudImages(CustomLoginRequiredAdmin,FormView):
     template_name = 'dashboard/backgroundimages/backgroundimages.html'
     form_class = BgImagesForms
 
@@ -65,7 +65,7 @@ class BackgroudImages(FormView,CustomLoginRequiredAdmin):
     
     def get(self, request, *args, **kwargs):
         if request.GET.get('methods') == 'search':
-            query = request.GET.get('query', '')
+            query = request.GET.get('query', '').strip()
             instance_data = BgImages.objects.filter(Q(sub_heading__icontains=query) | Q(main_heading__icontains=query))
             return render(request, 'dashboard/backgroundimages/search_data.html', {'bgimages_data': instance_data})
 
@@ -92,7 +92,7 @@ class BackgroudImages(FormView,CustomLoginRequiredAdmin):
             return JsonResponse({'success': False, 'errors': form.errors})
         
 
-class Category(FormView,CustomLoginRequiredAdmin):
+class Category(CustomLoginRequiredAdmin,FormView):
     template_name = 'dashboard/category/category.html'
     form_class = CategoryForms
 
@@ -103,8 +103,8 @@ class Category(FormView,CustomLoginRequiredAdmin):
 
     def get(self, request, *args, **kwargs):
         if request.GET.get('methods') == 'search':
-            query = request.GET.get('query', '')
-            instance_data = Categories.objects.filter(Q(sub_heading__icontains=query) | Q(main_heading__icontains=query))
+            query = request.GET.get('query', '').strip()
+            instance_data = Categories.objects.filter(name__icontains=query)
             return render(request, 'dashboard/category/search_data.html', {'category_data': instance_data})
 
         return super().get(request, *args, **kwargs)
@@ -122,6 +122,44 @@ class Category(FormView,CustomLoginRequiredAdmin):
             return JsonResponse({'success': True})
         else:
             form = CategoryForms(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+class Product(CustomLoginRequiredAdmin,FormView):
+    template_name = 'dashboard/products/products.html'
+    form_class = ProductFroms
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['products_data'] = Products.objects.all()
+        context['category_data'] = Categories.objects.all()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('methods') == 'search':
+            query = request.GET.get('query', '').strip()    
+            instance_data = Products.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query))
+            return render(request, 'dashboard/products/search_data.html', {'products_data': instance_data})
+
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        pk = request.POST.get('id')
+        methods = request.POST.get('methods')
+
+        if pk and methods == 'put':
+            instance = get_object_or_404(Products, pk=pk)
+            form = ProductFroms(request.POST, request.FILES, instance=instance)
+        elif pk and methods == 'delete':
+            instance = get_object_or_404(Products, pk=pk)
+            instance.delete()
+            return JsonResponse({'success': True})
+        else:
+            form = ProductFroms(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()

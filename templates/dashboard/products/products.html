@@ -3,7 +3,7 @@
 {% block title %}Backgroud Images | Dashboard{% endblock %}
 {% block body %}
 <!--  Body Wrapper -->
-<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+<div class="page-wrapper" style="background-color: white;" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
     <!-- Sidebar Start -->
     {% include "dashboard/sidebar.html" %}
@@ -13,15 +13,54 @@
         {% include "dashboard/navbar.html" %}
         <!--  Header End -->
         <div class="container" style="padding-top: 70px;">
-           <div class="d-flex justify-content-between align-items-center mb-4">
-            <a type="button" class="btn btn-primary w-60" data-bs-toggle="modal" data-bs-target="#addmodal">
-                <i title="Add Category" class="fa fa-plus">Add</i>
-            </a>
-            <div class="d-flex justify-content-between align-items-center">
-                <input type="search" id="search-input" class="search-focus py-2 ps-3 pe-3 shadow bg-white" placeholder="Search"
-                    style="border-radius: 20px; border-color: #b9b9b9;">
+           <div class="flex-w flex-sb-m p-b-52">
+            <div class="flex-w flex-l-m m-tb-10" data-bs-toggle="modal" data-bs-target="#addmodal">
+                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 ">
+                     Add
+                </div>
             </div>
-           </div>
+            <div class="flex-w flex-c-m m-tb-10">
+                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+                    <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+                    <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+                     Filter
+                </div>
+
+                <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+                    <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+                    <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+                    Search
+                </div>
+            </div>
+            
+            <!-- Search product -->
+            <div class="dis-none panel-search w-full p-t-10 p-b-15">
+                <div class="bor8 dis-flex p-l-15">
+                    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+
+                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="search" id="search-input"  placeholder="Search">
+                </div>	
+            </div>
+            <!-- Filter -->
+            <!-- Filter -->
+				<div class="dis-none panel-filter w-full p-t-10 ">
+					<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+						<div class="mb-3">
+							<div class="flex-w p-t-4 m-r--5">
+								{% for category in category_data %}
+                                <a href="#" class="flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5">
+									{{category.name}}
+								</a>
+                                {% endfor %}
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
             {{form.non_field_errors }}
             {{form.field_error }}
             <div class="d-flex justify-content-between align-items-center ">
@@ -30,37 +69,42 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Product</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-
-                                <form action="{%url 'BackgroudImages'%}" id="backgroudimages-forms"
+                                <form action="{%url 'Product'%}" id="Product-forms"
                                     enctype="multipart/form-data" method="POST">
                                     {% csrf_token %}
                                     <div style="width: 100px;"
-                                        class="card-header category-img position-relative overflow-hidden bg-transparent border p-0">
-                                    </div>
-                                    <div class="form-outline mb-4">
+                                    class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                    <img class="img-fluid w-100"
+                                        src="" alt=""  id="image-preview" style="display: none;">
+                                </div>
+                                    <div class="form-outline mb-2">
                                         <input name="image" type="file" accept="image/png, image/jpeg, image/svg"
-                                            class="form-control" id="image-input" />
+                                            class="form-control" id="image-input" onchange="previewImage()"/>
                                         <small id="image-error" class="text-danger text-center "></small>
                                         {{ form.image.errors }}
                                     </div>
-                                    <div class="form-outline mb-4">
-                                        <input name='sub_heading' type="text" id="form3Example3cg"
+                                    <div class="form-outline">
+                                        <label class="form-label" for="form3Example3cg">Name</label>
+                                        <input name='name' type="text" id="form3Example3cg"
                                             class="form-control form-control-lg" />
-                                        <label class="form-label" for="form3Example3cg">Sub heading</label>
-                                        <small id="sub_heading-error" class="text-danger ps-2 text-center"></small>
-                                        {{ form.sub_heading.errors }}
+                                        <small id="name-error" class="text-danger ps-2 text-center"></small>
+                                        {{ form.name.errors }}
                                     </div>
-                                    <div class="form-outline mb-4">
-                                        <input name='main_heading' type="text" id="form3Example3cg"
-                                            class="form-control form-control-lg" />
-                                        <label class="form-label" for="form3Example3cg">Main heading</label>
-                                        <small id="main_heading-error" class="text-danger ps-2 text-center"></small>
-                                        {{ form.main_heading.errors }}
+                                    <div class="form-outline mb-3">
+                                        <label class="form-label" for="form3Example3cg">Category</label>
+                                        <select class="form-select" name='category' aria-label="Default select example">
+                                            <option selected value=''>Choose Category</option>
+                                            {% for category in category_data %}
+                                            <option value="{{category.id}}">{{category.name}}</option>
+                                            {% endfor %}
+                                          </select>
+                                        <small id="category-error" class="text-danger ps-2 text-center"></small>
+                                        {{ form.category.errors }}
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit"
@@ -75,7 +119,7 @@
               
             </div>
             <div>
-                <div class="col-12">
+                <div class="col-12 container">
                     <div class="card recent-sales overflow-auto">
                         <div class="card-body">
 
@@ -84,91 +128,96 @@
                                     <tr>
                                         <th scope="col">id</th>
                                         <th scope="col">image</th>
-                                        <th scope="col">Sub heading</th>
-                                        <th scope="col">Main heading</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Created at</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
 
-                                {% for bgimage in bgimages_data %}
-
+                                {% for Product in products_data %}
                                 <tr>
-                                    <td> {{bgimage.id}} </td>
+                                    <td> {{Product.id}} </td>
                                     <td>
                                         <div style="width: 60px;" class="overflow-hidden">
-                                            <img class="w-100" src=" {{bgimage.image.url}} " alt="">
+                                            <img class="w-100" src=" {{Product.image.url}} " alt="">
                                         </div>
                                     </td>
-                                    <td> {{bgimage.sub_heading}} </td>
-                                    <td> {{bgimage.main_heading}} </td>
+                                    <td> {{Product.name}} </td>
+                                    <td> {{Product.category.name}} </td>
+                                    <td> {{Product.created_at}} </td>
                                     <!-- edit -->
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <a type="button" class="fs-4 btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#updatemodal{{bgimage.id}}">
+                                        <a type="button" class="fs-4 btn hov-btn3 border " data-bs-toggle="modal"
+                                            data-bs-target="#updatemodal{{Product.id}}">
                                             <i title="" class="fa fa-edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                               </svg></i>
                                         </a>
                                         <!--Edit Modal -->
-                                        <div class="modal fade" id="updatemodal{{bgimage.id}}" tabindex="-1"
+                                        <div class="modal fade" id="updatemodal{{Product.id}}" tabindex="-1"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
 
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Edit
-                                                            Category</h1>
+                                                            Product</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form method="post" action="{% url 'BackgroudImages' %}"
+                                                        <form method="post" action="{% url 'Product' %}"
                                                             enctype="multipart/form-data"
-                                                            id="backgroudimagesupdated-forms{{bgimage.id}}">
+                                                            id="Productupdated-forms{{Product.id}}">
                                                             {% csrf_token %}
-                                                            <input type="hidden" name="id" id="bgimage_id"
-                                                                value="{{bgimage.id}}">
+                                                            <input type="hidden" name="id" id="Product_id"
+                                                                value="{{Product.id}}">
                                                             <input type="hidden" name="methods" value="put">
                                                             <div style="width: 100px;"
-                                                                class="card-header category-img position-relative overflow-hidden bg-transparent border p-0">
-                                                                <img class="img-fluid w-100"
-                                                                    src="{{bgimage.image.url}} " alt="">
+                                                                class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                                                <img class="img-fluid w-100"  id="image-preview"
+                                                                    src="{{Product.image.url}}" alt="">
                                                             </div>
 
                                                             <div class="form-outline mb-4">
                                                                 <input name="image" type="file"
                                                                     accept="image/png, image/jpeg, image/svg"
-                                                                    class="form-control" id="image-inputs" />
-                                                                <small id="image-error{{bgimage.id}}"
+                                                                    class="form-control" id="image-inputs" onchange="previewImage()" />
+                                                                <small id="image-error{{Product.id}}"
                                                                     class="text-danger text-center"></small>
                                                             </div>
 
                                                             <div class="form-outline mb-4">
-                                                                <input name='sub_heading'
-                                                                    value="{{bgimage.sub_heading}}" type="text"
-                                                                    id="form3Example3cg"
-                                                                    class="form-control form-control-lg" />
                                                                 <label class="form-label" for="form3Example3cg">Sub
                                                                     heading</label>
-                                                                <small id="sub_heading-error{{bgimage.id}}"
+                                                                <input name='name'
+                                                                    value="{{Product.name}}" type="text"
+                                                                    id="form3Example3cg"
+                                                                    class="form-control form-control-lg" />
+                                                                <small id="name-error{{Product.id}}"
                                                                     class="text-danger text-center"></small>
                                                             </div>
                                                             <div class="form-outline mb-4">
-                                                                <input name='main_heading'
-                                                                    value="{{bgimage.main_heading}}" type="text"
-                                                                    id="form3Example3cg"
-                                                                    class="form-control form-control-lg" />
-                                                                <label class="form-label" for="form3Example3cg">Main
-                                                                    heading</label>
-                                                                <small id="main_heading-error{{bgimage.id}}"
-                                                                    class="text-danger text-center"></small>
+                                                                <label class="form-label" for="form3Example3cg">Category</label>
+                                                                <select class="form-select" name='category' aria-label="Default select example">
+                                                                    {% for category in category_data %}
+                                                                    {% if Product.category.id == category.id %}
+                                                                    <option selected value="{{category.id}}">{{category.name}}</option>
+                                                                    {% else %}
+                                                                    <option value="{{category.id}}">{{category.name}}</option>
+                                                                    {% endif %}
+                                                                    {% endfor %}
+                                                                  </select>
+                                                                <small id="category-error{{Product.id}}" class="text-danger ps-2 text-center"></small>
+                                                                {{ form.category.errors }}
                                                             </div>
                                                             <div class="d-flex justify-content-center">
                                                                 <button type="submit"
-                                                                    class="btn btn-danger btn-lg gradient-custom-4 w-50 text-light bgimage-update-btn"
-                                                                    data-bgimage-id="{{bgimage.id}}" type="submit">Save
+                                                                    class="btn btn-danger btn-lg gradient-custom-4 w-50 text-light Product-update-btn"
+                                                                    data-Product-id="{{Product.id}}" type="submit">Save
                                                                     Changes</button>
                                                             </div>
 
@@ -180,15 +229,15 @@
 
                                         <!-- Button trigger modal -->
 
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deletemodal{{bgimage.id}}">
+                                        <button type="button" class="btn hov-btn3 border" data-bs-toggle="modal"
+                                            data-bs-target="#deletemodal{{Product.id}}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
                                               </svg>
                                         </button>
-                                        <!-- Modal  for delete the Category -->
-                                        <div class="modal fade" id="deletemodal{{bgimage.id}}" tabindex="-1"
+                                        <!-- Modal  for delete the Product -->
+                                        <div class="modal fade" id="deletemodal{{Product.id}}" tabindex="-1"
                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -198,16 +247,16 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body ">
-                                                        <p style="font-size: large;">Are you sure you want to delete
+                                                        <p style="font-size: large;">Are you sure you want to delete this Product
                                                             <span class="text-danger"
-                                                                style="font-weight: bold;">'{{bgimage.main_heading}}'</span></p>
+                                                                style="font-weight: bold;">'{{Product.name}}'</span></p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <form method="POST" action="{%url 'BackgroudImages' %}"
-                                                            id="deletefoms-forms{{bgimage.id}}">
+                                                        <form method="POST" action="{%url 'Product' %}"
+                                                            id="deletefoms-forms{{Product.id}}">
                                                             {% csrf_token %}
                                                             <input type="hidden" name="id" id="delete_id"
-                                                                value="{{bgimage.id}}">
+                                                                value="{{Product.id}}">
                                                             <input type="hidden" name="methods" value="delete">
                                                             <button type="submit"
                                                                 class="btn btn-danger">Confirm</button>
@@ -243,7 +292,7 @@
     <script>
         // Add Function
         $(document).ready(function () {
-            $('#backgroudimages-forms').submit(function (e) {
+            $('#Product-forms').submit(function (e) {
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
@@ -255,7 +304,8 @@
                         $('.refresh').load(location.href + " .refresh");
                         if (response.success) {
                             $('#addmodal').modal('hide');
-                            $('#backgroudimages-forms')[0].reset();
+                            $('#Product-forms')[0].reset();
+                            $("#image-preview").css("display", "none");
                         } else {
                             updateErrorMessages(response.errors);
                         }
@@ -271,25 +321,25 @@
             if (errors.image) {
                 $('#' + 'image-error').text(errors.image);
             } else {
-                $('#' + 'image-error').hide()
+                $('#' + 'image-error').text('')
             }
-            if (errors.main_heading) {
-                $('#' + 'main_heading-error').text(errors.main_heading);
+            if (errors.name) {
+                $('#' + 'name-error').text(errors.name);
             } else {
-                $('#' + 'main_heading-error').hide()
+                $('#' + 'name-error').text('')
             }
-            if (errors.sub_heading) {
-                $('#' + 'sub_heading-error').text(errors.sub_heading);
+            if (errors.category) {
+                $('#' + 'category-error').text(errors.category);
             } else {
-                $('#' + 'sub_heading-error').hide()
+                $('#' + 'category-error').text('')
             }
         }
         // Updating Function
         $(document).ready(function () {
-            $(document).on('submit', '[id^="backgroudimagesupdated-forms"]', function (e) {
+            $(document).on('submit', '[id^="Productupdated-forms"]', function (e) {
                 e.preventDefault();
 
-                var id = $(this).find('#bgimage_id').val();
+                var id = $(this).find('#Product_id').val();
                 $.ajax({
                     type: 'POST',
                     url: $(this).attr('action'),
@@ -300,22 +350,22 @@
                         if (response.success) {
                             $('.refresh').load(location.href + " .refresh");
                             $('#updatemodal' + id).modal('hide');
-                            $('#backgroudimagesupdated-forms' + id)[0].reset();
+                            $('#Productupdated-forms' + id)[0].reset();
                         } else {
                             if (response.errors.image) {
                                 $('#' + 'image-error' + id).text(response.errors.image);
                             } else {
-                                $('#' + 'image-error' + id).hide()
+                                $('#' + 'image-error' + id).text('')
                             }
-                            if (response.errors.main_heading) {
-                                $('#' + 'main_heading-error' + id).text(response.errors.main_heading);
+                            if (response.errors.name) {
+                                $('#' + 'name-error' + id).text(response.errors.name);
                             } else {
-                                $('#' + 'main_heading-error' + id).hide()
+                                $('#' + 'name-error' + id).text('')
                             }
-                            if (response.errors.sub_heading) {
-                                $('#' + 'sub_heading-error' + id).text(response.errors.sub_heading);
+                            if (response.errors.category) {
+                                $('#' + 'category-error' + id).text(response.errors.category);
                             } else {
-                                $('#' + 'sub_heading-error' + id).hide()
+                                $('#' + 'category-error' + id).text('')
                             }
                         }
                     },
@@ -343,7 +393,7 @@
                         if (response.success) {
                             $('.refresh').load(location.href + " .refresh");
                             $('#deletemodal' + id).modal('hide');
-                            $('#backgroudimagesupdated-forms' + id)[0].reset();
+                            $('#Productupdated-forms' + id)[0].reset();
                         } else {
                             alert('Something wrong');
                         }
@@ -371,7 +421,7 @@
             var query = $("#search-input").val();
             $.ajax({
                 type: "GET",
-                url: "{%url 'BackgroudImages'%}",
+                url: "{%url 'Product'%}",
                 data: { "query": query , "methods":'search'},
                 success: function (data) {
                     $("#search-results").html(data);
@@ -380,6 +430,19 @@
         }
         
     });
-    </script>
 
+    // Image-show
+    function previewImage() {
+        var input = document.getElementById('image-input');
+        var preview = document.getElementById('image-preview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>
     {% endblock %}

@@ -8,10 +8,14 @@
   <title>{% block title %}{% endblock title %}</title>
   <link rel="shortcut icon" type="image/png" href="{% static "images/logos/favicon.png" %}" />
   <link rel="stylesheet" href="{% static "css/styles.min.css" %}" />
-</head>
+  <link rel="stylesheet" type="text/css" href="{%static 'fonts/iconic/css/material-design-iconic-font.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{%static 'css/util.css' %}">
+<link rel="stylesheet" type="text/css" href="{%static 'css/main.css' %}">
 
+</head>
 <body>
     {% block body %}{% endblock body %}
+    
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="{%static 'libs/jquery/dist/jquery.min.js'%}"></script>
   <script src="{%static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js'%}"></script>
@@ -20,6 +24,8 @@
   <script src="{%static 'libs/apexcharts/dist/apexcharts.min.js'%}"></script>
   <script src="{%static 'libs/simplebar/dist/simplebar.js'%}"></script>
   <script src="{%static 'js/dashboard.js'%}"></script>
+  <script src="{%static 'vendor/animsition/js/animsition.min.js'%}"></script>
+	<script src="{%static 'js/main.js'%}"></script>
 </body>
 
 </html>

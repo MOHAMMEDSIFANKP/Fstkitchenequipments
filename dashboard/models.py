@@ -14,3 +14,11 @@ class Categories(models.Model):
     image = models.ImageField(upload_to='media/category/')
     name = models.CharField(max_length=150,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Products(models.Model):
+    image = models.ImageField(upload_to='media/products/')
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    name = models.CharField(max_length=150,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    
