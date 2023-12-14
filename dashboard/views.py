@@ -68,7 +68,6 @@ class BackgroudImages(CustomLoginRequiredAdmin,FormView):
             query = request.GET.get('query', '').strip()
             instance_data = BgImages.objects.filter(Q(sub_heading__icontains=query) | Q(main_heading__icontains=query))
             return render(request, 'dashboard/backgroundimages/search_data.html', {'bgimages_data': instance_data})
-
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
