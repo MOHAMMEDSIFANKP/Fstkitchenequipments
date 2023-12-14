@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Home</title>
+	<title>{% block title %}{% endblock %}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="{%static 'images/icons/favicon.png' %}"/>
+	<link rel="icon" type="image/png" href="{%static 'images/logos/favicon.png' %}"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'vendor/bootstrap/css/bootstrap.min.css' %}">
 <!--===============================================================================================-->
@@ -34,7 +34,6 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'css/util.css' %}">
 	<link rel="stylesheet" type="text/css" href="{%static 'css/main.css' %}">
-    {% block link %}{% endblock %}
 <!--===============================================================================================-->
 <style>
 	 .scroll-container {
@@ -70,6 +69,14 @@
     display: inline-block; 
     margin-right: 15px;
   }
+	@media only screen and (max-width: 999px) {
+	  .horizontal-line {
+		display: none;
+	}
+	.space-div{
+		display: none;
+	}
+	}
 </style>
 <body class="animsition">
 	
