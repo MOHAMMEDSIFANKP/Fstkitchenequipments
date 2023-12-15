@@ -10,7 +10,7 @@
 		<div class="container">
 			<div class="flex-w flex-sb-m p-b-52">
 				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
+					<button data-category="all"  class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1 category-link" data-filter="*">
 						All Products
 					</button>
 				</div>
@@ -35,7 +35,7 @@
 							<i class="zmdi zmdi-search"></i>
 						</button>
 
-						<input class="mtext-107 cl2 size-114 plh2 p-r-15 " type="text" name="search-product" placeholder="Search">
+						<input class="mtext-107 cl2 size-114 plh2 p-r-15 " type="text" name="search-product" id='search-input' placeholder="Search">
 					</div>	
 				</div>
 				<div class="dis-none panel-filter w-full p-t-10 ">
@@ -56,19 +56,11 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="row isotope-grid">
-				<!-- <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-					<div class="block2">
-						<div class="block2-pic hov-img0">
-							<img src="{%static 'images/whitebg.jpg'%}" alt="IMG-PRODUCT">
-							<p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; color: gray; font-size: 20px; font-weight: bold;">Show All</p>
-						</div>
-					</div>
-					
-				</div> -->
 			<!-- category data -->
-			{% for product in data_list.products_data %}
+			<div id="search-results">
+			<input type="hidden" value="{{data_list.category_id}}" id="category_id">
+			<div class="row isotope-grid">
+				{% for product in data_list.products_data %}
 			<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
 				<!-- Block2 -->
 				<div class="block2">
@@ -92,10 +84,9 @@
                         </div>
 					</div>
 				</div>
-			</div>
-
-			
+			</div>			
 			{% endfor %}
+			</div>
 		</div>
 
 			<!-- Load more -->
@@ -108,44 +99,43 @@
 	</div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-	// Searching function
-	$(document).ready(function () {
-	$("#search-input").on("keyup", function (e) {
-		if (e.keyCode === 13) {
-			Search();
-		} else {
-			clearTimeout($(this).data("timeout"));
-			$(this).data("timeout", setTimeout(Search, 500)); 
-		}
-	});
-	function Search() {
-		var query = $("#search-input").val();
-		$.ajax({
-			type: "GET",
-			url: "{%url 'Home'%}",
-			data: { "query": query , "methods":'search'},
-			success: function (data) {
-				$("#search-results").html(data);
+	$(document).ready(function () {	
+		// Searching function
+		$("#search-input").on("keyup", function (e) {
+			if (e.keyCode === 13) {
+				Search();
+			} else {
+				clearTimeout($(this).data("timeout"));
+				$(this).data("timeout", setTimeout(Search, 500)); 
 			}
 		});
-	}
-
-	// 
-	$(".category-link").on("click", function (e) {
-			e.preventDefault(); 
-			var categoryId = $(this).data("category");
+	
+		function Search() {
+			var query = $("#search-input").val();
 			$.ajax({
 				type: "GET",
-				url: "{% url 'Home' %}",
-				data: { "id": categoryId, "methods": 'category' },
+				url: "{%url 'Product_List' %}",
+				data: { "query": query, "methods": 'search', 'category_id': $("#category_id").val() },
 				success: function (data) {
 					$("#search-results").html(data);
 				}
-				
+			});
+		}
+	
+		// Category change function
+		$(".category-link").on("click", function (e) {
+			e.preventDefault();
+			var categoryId = $(this).data("category");
+			$("#category_id").val(categoryId); 
+			$.ajax({
+				type: "GET",
+				url: "{% url 'Product_List' %}",
+				data: { "category_id": categoryId, "methods": 'category' },
+				success: function (data) {
+					$("#search-results").html(data);
+				}
 			});
 		});
-
-});
-
+	});
 </script>
 {% endblock %}

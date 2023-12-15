@@ -1,0 +1,29 @@
+<input type="hidden" value="{{category_id}}" id="category_id">
+<div class="row isotope-grid">
+    {% for product in products_data %}
+<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+    <!-- Block2 -->
+    <div class="block2">
+        <div class="block2-pic hov-img0">
+            <img src="{{product.image.url}}" alt="IMG-PRODUCT">
+
+            {% comment %} <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                Quick View
+            </a>  {% endcomment %}
+        </div>
+
+        <div class="block2-txt flex-w flex-t p-t-14">
+            <div class="block2-txt-child1 flex-col-l ">
+                <span class="stext-105 cl3"style="font-size: small !important;" >
+                    {{product.category.name}}
+                </span>
+                <button style="color: rgb(39, 35, 35);" class=" cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                    {{product.name}}
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>			
+{% endfor %}
+</div>

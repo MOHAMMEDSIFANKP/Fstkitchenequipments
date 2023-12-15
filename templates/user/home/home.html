@@ -137,6 +137,7 @@
 			</div>
 			<!-- Products -->
 			<div  id='search-results'>
+			<input type="hidden" value="{{category_id}}" id="category_id">
 			<div class="row isotope-grid ">
 				{% for product in products_data %}
 				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
@@ -184,44 +185,44 @@
 	</section>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-	// Searching function
-	$(document).ready(function () {
-$("#search-input").on("keyup", function (e) {
-	if (e.keyCode === 13) {
-		Search();
-	} else {
-		clearTimeout($(this).data("timeout"));
-		$(this).data("timeout", setTimeout(Search, 500)); 
-	}
-});
-	function Search() {
-		var query = $("#search-input").val();
-		$.ajax({
-			type: "GET",
-			url: "{%url 'Home'%}",
-			data: { "query": query , "methods":'search'},
-			success: function (data) {
-				$("#search-results").html(data);
+		$(document).ready(function () {	
+		// Searching function
+		$("#search-input").on("keyup", function (e) {
+			if (e.keyCode === 13) {
+				Search();
+			} else {
+				clearTimeout($(this).data("timeout"));
+				$(this).data("timeout", setTimeout(Search, 500)); 
 			}
 		});
-	}
-
-	// 
-	$(".category-link").on("click", function (e) {
-            e.preventDefault(); 
-            var categoryId = $(this).data("category");
-            $.ajax({
-                type: "GET",
-                url: "{% url 'Home' %}",
-                data: { "id": categoryId, "methods": 'category' },
-                success: function (data) {
-                    $("#search-results").html(data);
-                }
-				
-            });
-        });
-
-});
+	
+		function Search() {
+			var query = $("#search-input").val();
+			$.ajax({
+				type: "GET",
+				url: "{%url 'Home' %}",
+				data: { "query": query, "methods": 'search', 'category_id': $("#category_id").val() },
+				success: function (data) {
+					$("#search-results").html(data);
+				}
+			});
+		}
+	
+		// Category change function
+		$(".category-link").on("click", function (e) {
+			e.preventDefault();
+			var categoryId = $(this).data("category");
+			$("#category_id").val(categoryId); 
+			$.ajax({
+				type: "GET",
+				url: "{% url 'Home' %}",
+				data: { "category_id": categoryId, "methods": 'category' },
+				success: function (data) {
+					$("#search-results").html(data);
+				}
+			});
+		});
+	});
 
 </script>
     <script>

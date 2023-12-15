@@ -3,6 +3,8 @@ from django.views.generic import *
 from dashboard.models import *
 from django.http import JsonResponse
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
+
 # Create your views here.
 
 class Home(TemplateView):
@@ -16,24 +18,22 @@ class Home(TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
+        query = request.GET.get('query', '').strip()
+        category_id = request.GET.get('category_id', '').strip()
+
         if request.GET.get('methods') == 'search':
-            query = request.GET.get('query', '').strip()
-            instance_data = Products.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query))[:8]
-            return render(request, 'user/home/search_data.html', {'products_data': instance_data})
+            if category_id and category_id != 'all':
+                instance_data = Products.objects.filter(category_id=category_id, name__icontains=query) | Products.objects.filter(category_id=category_id, category__name__icontains=query)
+            else:
+                instance_data = Products.objects.filter(name__icontains=query) | Products.objects.filter(category__name__icontains=query)
+            return render(request, 'user/home/search_data.html', {'products_data': instance_data, 'category_id': category_id})
 
         if request.GET.get('methods') == 'category':
-            id = request.GET.get('id', '').strip()
-            if id == 'all':
-                instance_data = Products.objects.all()[:8]
-            else:
-                try:
-                    instance_data = Products.objects.filter(category__id=id)
-                except:
-                    return render(request, 'user/home/search_data.html', {'products_data': instance_data})
+            instance_data = Products.objects.all() if category_id == 'all' else Products.objects.filter(category__id=category_id)
+            return render(request, 'user/home/search_data.html', {'products_data': instance_data, 'category_id': category_id})
 
-            return render(request, 'user/home/search_data.html', {'products_data': instance_data})
-        
         return super().get(request, *args, **kwargs)
+
     
 class Category_List(ListView):
     template_name = 'user/category/category_list.html'
@@ -44,38 +44,33 @@ class Category_List(ListView):
         return {'category_data' : category_data}
     
 class Product_List(ListView):
-    template_name = 'user/products_list.html'
+    template_name = 'user/products/products_list.html'
     context_object_name = 'data_list'
 
     def get_queryset(self):
-        category_id = self.kwargs.get('pk', None)
-        category_data = Categories.objects.all().order_by('name')
-        if category_id:
-            try:
-                products_data = Products.objects.filter(category_id=category_id)
-            except Products.DoesNotExist:
-                return redirect('Category_List')
-            return {'products_data':products_data,'category_data':category_data}
-        else:
-            return redirect('Category_List')
-        
+        category_id = self.kwargs.get('pk')
+        try:
+            category_data = Categories.objects.all().order_by('name')
+            products_data = Products.objects.filter(category_id=category_id) if category_id else Products.objects.all()
+        except:
+            return redirect(Category_List)
+        return {'products_data': products_data, 'category_data': category_data, 'category_id': category_id}
+
     def get(self, request, *args, **kwargs):
+        query = request.GET.get('query', '').strip()
+        category_id = request.GET.get('category_id', '').strip()
+
         if request.GET.get('methods') == 'search':
-            query = request.GET.get('query', '').strip()
-            instance_data = Products.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query))[:8]
-            return render(request, 'user/home/search_data.html', {'products_data': instance_data})
+            if category_id and category_id != 'all':
+                instance_data = Products.objects.filter(category_id=category_id, name__icontains=query) | Products.objects.filter(category_id=category_id, category__name__icontains=query)
+            else:
+                instance_data = Products.objects.filter(name__icontains=query) | Products.objects.filter(category__name__icontains=query)
+            return render(request, 'user/products/search_data.html', {'products_data': instance_data, 'category_id': category_id})
 
         if request.GET.get('methods') == 'category':
-            id = request.GET.get('id', '').strip()
-            if id == 'all':
-                instance_data = Products.objects.all()[:8]
-            else:
-                try:
-                    instance_data = Products.objects.filter(category__id=id)
-                except:
-                    return render(request, 'user/home/search_data.html', {'products_data': instance_data})
+            instance_data = Products.objects.all() if category_id == 'all' else Products.objects.filter(category__id=category_id)
+            return render(request, 'user/products/search_data.html', {'products_data': instance_data, 'category_id': category_id})
 
-            return render(request, 'user/home/search_data.html', {'products_data': instance_data})
-        
         return super().get(request, *args, **kwargs)
+
     
