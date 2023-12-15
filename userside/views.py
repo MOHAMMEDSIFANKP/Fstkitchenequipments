@@ -23,13 +23,13 @@ class Home(TemplateView):
 
         if request.GET.get('methods') == 'search':
             if category_id and category_id != 'all':
-                instance_data = Products.objects.filter(category_id=category_id, name__icontains=query) | Products.objects.filter(category_id=category_id, category__name__icontains=query)
+                instance_data = Products.objects.filter(category_id=category_id, name__icontains=query) | Products.objects.filter(category_id=category_id, category__name__icontains=query)[:8]
             else:
-                instance_data = Products.objects.filter(name__icontains=query) | Products.objects.filter(category__name__icontains=query)
+                instance_data = Products.objects.filter(name__icontains=query) | Products.objects.filter(category__name__icontains=query)[:8]
             return render(request, 'user/home/search_data.html', {'products_data': instance_data, 'category_id': category_id})
 
         if request.GET.get('methods') == 'category':
-            instance_data = Products.objects.all() if category_id == 'all' else Products.objects.filter(category__id=category_id)
+            instance_data = Products.objects.all() if category_id == 'all' else Products.objects.filter(category__id=category_id)[:8]
             return render(request, 'user/home/search_data.html', {'products_data': instance_data, 'category_id': category_id})
 
         return super().get(request, *args, **kwargs)
