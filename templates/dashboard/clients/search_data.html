@@ -1,0 +1,133 @@
+<thead>
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col">image</th>
+        <th scope="col">Name</th>
+        <th scope="col">Created at</th>
+        <th scope="col">Actions</th>
+    </tr>
+</thead>
+
+{% for client in clients_data %}
+<tr>
+    <td> {{client.id}} </td>
+    <td>
+        <div style="width: 60px;" class="overflow-hidden">
+            <img class="w-100" src=" {{client.image.url}} " alt="">
+        </div>
+    </td>
+    <td> {{client.name}} </td>
+    <td> {{client.created_at}} </td>
+    <!-- edit -->
+    <td>
+        <!-- Button trigger modal -->
+        <a type="button" class="fs-4 btn hov-btn3 border " data-bs-toggle="modal"
+            data-bs-target="#updatemodal{{client.id}}">
+            <i title="" class="fa fa-edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+              </svg></i>
+        </a>
+        <!--Edit Modal -->
+        <div class="modal fade" id="updatemodal{{client.id}}" tabindex="-1"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit
+                            client</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="{% url 'Clients_View' %}"
+                            enctype="multipart/form-data"
+                            id="clientupdated-forms{{client.id}}">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" id="client_id"
+                                value="{{client.id}}">
+                            <input type="hidden" name="methods" value="put">
+                            <div style="width: 100px;"
+                                class="card-header client-img position-relative overflow-hidden bg-transparent border p-0">
+                                <img class="img-fluid w-100"  id="image-preview"
+                                    src="{{client.image.url}}" alt="">
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input name="image" type="file"
+                                    accept="image/png, image/jpeg, image/svg"
+                                    class="form-control" id="image-inputs" onchange="previewImage()" />
+                                <small id="image-error{{client.id}}"
+                                    class="text-danger text-center"></small>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="form3Example3cg">Sub
+                                    heading</label>
+                                <input name='name'
+                                    value="{{client.name}}" type="text"
+                                    id="form3Example3cg"
+                                    class="form-control form-control-lg" />
+                                <small id="name-error{{client.id}}"
+                                    class="text-danger text-center"></small>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button type="submit"
+                                    class="btn btn-danger btn-lg gradient-custom-4 w-50 text-light client-update-btn"
+                                    data-client-id="{{client.id}}" type="submit">Save
+                                    Changes</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button trigger modal -->
+
+        <button type="button" class="btn hov-btn3 border" data-bs-toggle="modal"
+            data-bs-target="#deletemodal{{client.id}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+              </svg>
+        </button>
+        <!-- Modal  for delete the client -->
+        <div class="modal fade" id="deletemodal{{client.id}}" tabindex="-1"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body ">
+                        <p style="font-size: medium;">Are you sure you want to delete this client
+                            <span class="text-danger"
+                                style="font-weight: bold;">'{{client.name}}'</span>   ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form method="POST" action="{%url 'Clients_View' %}"
+                            id="deletefoms-forms{{client.id}}">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" id="delete_id"
+                                value="{{client.id}}">
+                            <input type="hidden" name="methods" value="delete">
+                            <button type="submit"
+                                class="btn btn-danger">Confirm</button>
+                        </form>
+                        <button type="button" class="btn hov-btn3"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+    </td>
+    <!--deleting ended-->
+</tr>
+{% endfor %}
+</tbody>

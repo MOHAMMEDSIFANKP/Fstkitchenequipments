@@ -15,10 +15,24 @@ class Categories(models.Model):
     name = models.CharField(max_length=150,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 class Products(models.Model):
     image = models.ImageField(upload_to='media/products/')
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     name = models.CharField(max_length=150,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+    
+
+class Clients(models.Model):
+    image = models.ImageField(upload_to='media/clients/')
+    name = models.CharField(max_length=150,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
     

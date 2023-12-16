@@ -49,7 +49,7 @@ class Signin(FormView):
 class CustomLogoutView(CustomLoginRequiredAdmin,LogoutView):
     template_name = 'dashboard/loginpage.html'
     def get_next_page(self):
-        return render(self.request,self.template_name)
+        return super().get_next_page()
     
 class DashboardHome(CustomLoginRequiredAdmin,TemplateView):
     template_name = 'dashboard/dashboard.html'
@@ -159,6 +159,44 @@ class Product(CustomLoginRequiredAdmin,FormView):
             return JsonResponse({'success': True})
         else:
             form = ProductFroms(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+class Clients_View(CustomLoginRequiredAdmin,FormView):
+    template_name = 'dashboard/clients/clients.html'
+    form_class = ClientsForms
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['clients_data'] = Clients.objects.all().order_by('-id')
+        return context
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('methods') == 'search':
+            query = request.GET.get('query', '').strip()    
+            instance_data = Clients.objects.filter(name__icontains=query)
+            return render(request, 'dashboard/clients/search_data.html', {'clients_data': instance_data})
+
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        pk = request.POST.get('id')
+        methods = request.POST.get('methods')
+
+        if pk and methods == 'put':
+            instance = get_object_or_404(Clients, pk=pk)
+            form = ClientsForms(request.POST, request.FILES, instance=instance)
+        elif pk and methods == 'delete':
+            instance = get_object_or_404(Clients, pk=pk)
+            instance.delete()
+            return JsonResponse({'success': True})
+        else:
+            form = ClientsForms(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()

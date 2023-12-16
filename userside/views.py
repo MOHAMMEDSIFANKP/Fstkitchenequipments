@@ -3,7 +3,6 @@ from django.views.generic import *
 from dashboard.models import *
 from django.http import JsonResponse
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -15,6 +14,7 @@ class Home(TemplateView):
         context["bg_images"] = BgImages.objects.all()
         context["category_data"] = Categories.objects.all().order_by('name')
         context["products_data"] = Products.objects.all()[:8]
+        context["clients_data"] = Clients.objects.all()
         return context
 
     def get(self, request, *args, **kwargs):
