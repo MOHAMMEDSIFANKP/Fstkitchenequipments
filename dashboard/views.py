@@ -204,3 +204,36 @@ class Clients_View(CustomLoginRequiredAdmin,FormView):
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
         
+
+class About_Dashboard(CustomLoginRequiredAdmin, FormView):
+    template_name = 'dashboard/about/about.html'
+    form_class = AboutOurStoryForms
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['story_data'] = About_Story.objects.all().first()
+        return context
+    
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def post(self, request, *args, **kwargs):
+        pk = request.POST.get('id')
+        methods = request.POST.get('methods')
+
+        if pk and methods == 'put':
+            instance = get_object_or_404(About_Story, pk=pk)
+            form = AboutOurStoryForms(request.POST, request.FILES, instance=instance)
+        elif pk and methods == 'delete':
+            instance = get_object_or_404(About_Story, pk=pk)
+            instance.delete()
+            return JsonResponse({'success': True})
+        else:
+            form = AboutOurStoryForms(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})

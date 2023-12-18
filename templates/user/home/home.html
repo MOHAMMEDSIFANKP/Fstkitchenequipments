@@ -176,7 +176,7 @@
 			</div>
 		</div>
 			<!-- Load more -->
-			<div class="flex-c-m flex-w w-full p-t-45">
+			<div class="flex-c-m flex-w w-full p-t-45 load-more">
 				<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
 					Load More
 				</a>
@@ -184,6 +184,8 @@
 		</div>
 	</section>
 </div>
+
+{% comment %} {% include "user/home/owlcarousel.html" %} {% endcomment %}
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
 		$(document).ready(function () {	
@@ -223,7 +225,17 @@
 				}
 			});
 		});
+
+// Load more
+		$(".load-more").on("click", function (e) {
+			e.preventDefault();
+			var categoryId = document.getElementById('category_id').value;
+			var redirectUrl = (categoryId === 'all' || categoryId === '') ? "{% url 'Product_List' %}" :  "{% url 'Product_List' %}" + categoryId;
+			window.location.href = redirectUrl;
+		});
 	});
+
+	
 
 </script>
     <script>

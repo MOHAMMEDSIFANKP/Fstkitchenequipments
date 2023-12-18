@@ -1,0 +1,280 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}Products Management | Dashboard{% endblock %}
+{% block body %}
+<!--  Body Wrapper -->
+<div class="page-wrapper" style="background-color: white;" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    {% include "dashboard/sidebar.html" %}
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        {% include "dashboard/navbar.html" %}
+        <!--  Header End -->
+        <div class="container" style="padding-top: 70px;">
+           <div class="flex-w flex-sb-m p-b-52">
+        </div>
+            <div>
+                <div class="col-12 container">
+                    <div class="card recent-sales overflow-auto">
+                        <div class="card-body refresh">
+                            <div style="display: flex; justify-content: space-between;">
+                                <h3 class="mtext-111 cl2 p-b-16">
+                                    Our Story
+                                </h3>
+                                {% if story_data %}
+                                <button class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4"  data-bs-toggle="modal" data-bs-target="#editmodal">
+                                    <i title="" class="fa fa-edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                      </svg></i>
+                               </button>
+                                {% else %}
+                                <button class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4"  data-bs-toggle="modal" data-bs-target="#addmodal">
+                                    Add
+                               </button>
+                                {% endif %}
+        
+                            </div>
+                            <p class="stext-113 cl6 p-b-26 pt-2">
+                                {{story_data.body |safe}}
+                            </p> 
+                        </div>
+                    </div>
+                    <!-- Our Story Add Modal -->
+                    <div class="d-flex justify-content-between align-items-center ">
+                        <div class="modal fade  modal-lg" id="addmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Our Story</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                   <div class="modal-body">
+                                        <form action="{%url 'About_Dashboard'%}" id="about-story-forms"
+                                            enctype="multipart/form-data" method="POST">
+                                            {% csrf_token %}
+                                            <div style="width: 100px;"
+                                            class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                            <img class="img-fluid w-100"
+                                                src="" alt=""  id="image-preview" style="display: none;">
+                                             </div> 
+                                            <small id="image-error" class="text-danger text-center "></small>
+                                            <small id="body-error" class="text-danger text-center "></small>      
+                                            {{ form.media }}
+                                            {{ form.as_p }}
+                                            {{ form.image.errors }}
+                                            {{ form.body.errors }}
+                                            <div class="d-flex justify-content-center">
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-lg gradient-custom-4 w-50 text-light"
+                                                    type="submit">Save Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Our Story Add Modal -->
+                    <!-- Edit Our Story Modal -->
+                    <div class="d-flex justify-content-between align-items-center ">
+                        <div class="modal fade  modal-lg" id="editmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Our Story</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                   <div class="modal-body">
+                                        <form action="{%url 'About_Dashboard'%}" id="about-story-forms"
+                                            enctype="multipart/form-data" method="POST">
+                                            {% csrf_token %}
+                                            <div style="width: 100px;"
+                                            class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                            <img class="img-fluid w-100"
+                                                src="" alt=""  id="image-preview" style="display: none;">
+                                             </div>
+                                            
+                                            <small id="image-error" class="text-danger text-center "></small>
+                                            <small id="body-error" class="text-danger text-center "></small>      
+                                            {{ form.media }}
+                                            {{ form.as_p }}
+                                            {{ form.image.errors }}
+                                            {{ form.body.errors }}
+                                            <div class="d-flex justify-content-center">
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-lg gradient-custom-4 w-50 text-light"
+                                                    type="submit">Save Changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- EndEdit Our Story Modal -->
+                    <div class="card recent-sales overflow-auto">
+                        <div class="card-body">
+                            <h3 class="mtext-111 cl2 p-b-16">
+                                Our Mission
+                            </h3>
+    
+                            <p class="stext-113 cl6 p-b-26">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat consequat enim, non auctor massa ultrices non. Morbi sed odio massa. Quisque at vehicula tellus, sed tincidunt augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas varius egestas diam, eu sodales metus scelerisque congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas gravida justo eu arcu egestas convallis. Nullam eu erat bibendum, tempus ipsum eget, dictum enim. Donec non neque ut enim dapibus tincidunt vitae nec augue. Suspendisse potenti. Proin ut est diam. Donec condimentum euismod tortor, eget facilisis diam faucibus et. Morbi a tempor elit.
+                            </p>
+                           
+                        </div>
+                    </div>
+                </div><!-- End Recent Sales -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        // Add Function
+        $(document).ready(function () {
+            $('#about-story-forms').submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        $('.refresh').load(location.href + " .refresh");
+                        if (response.success) {
+                            $('#addmodal').modal('hide');
+                            $('#about-story-forms')[0].reset();
+                            $("#image-preview").css("display", "none");
+                        } else {
+                            updateErrorMessages(response.errors);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Something wrong')
+                    }
+                });
+            });
+        });
+
+        function updateErrorMessages(errors) {
+            if (errors.image) {
+                $('#' + 'image-error').text(errors.image);
+            } else {
+                $('#' + 'image-error').text('')
+            }
+            if (errors.body) {
+                $('#' + 'body-error').text(errors.body);
+            } else {
+                $('#' + 'body-error').text('')
+            }
+        }
+        // Updating Function
+        $(document).ready(function () {
+            
+            $('#about-story-edit-forms').submit(function (e) {
+                e.preventDefault();
+
+                var id = $(this).find('#story_id').val();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $('.refresh').load(location.href + " .refresh");
+                            $('#updatemodal' + id).modal('hide');
+                            $('#Productupdated-forms' + id)[0].reset();
+                        } else {
+                            updateErrorMessages(response.errors)
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Something wrong');
+                    }
+                });
+            });
+
+        });
+
+        // Deleting Function
+        $(document).ready(function () {
+            $(document).on('submit', '[id^="deletefoms-forms"]', function (e) {
+                e.preventDefault();
+
+                var id = $(this).find('#delete_id').val();
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            $('.refresh').load(location.href + " .refresh");
+                            $('#deletemodal' + id).modal('hide');
+                            $('#Productupdated-forms' + id)[0].reset();
+                        } else {
+                            alert('Something wrong');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Something wrong');
+                    }
+                });
+            });
+
+        });
+
+        // Searching function
+        $(document).ready(function () {
+        $("#search-input").on("keyup", function (e) {
+            if (e.keyCode === 13) {
+                Search();
+            } else {
+                clearTimeout($(this).data("timeout"));
+                $(this).data("timeout", setTimeout(Search, 500)); 
+            }
+        });
+            function Search() {
+                var query = $("#search-input").val();
+                $.ajax({
+                    type: "GET",
+                    url: "{%url 'Product'%}",
+                    data: { "query": query , "methods":'search'},
+                    success: function (data) {
+                        $("#search-results").html(data);
+                    }
+                });
+            }
+        
+        });
+
+
+    // Image-show
+    function previewImage() {
+        var input = document.getElementById('image-input');
+        var preview = document.getElementById('image-preview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    </script>
+    {% endblock %}

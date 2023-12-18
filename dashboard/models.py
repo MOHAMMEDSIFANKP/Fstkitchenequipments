@@ -1,5 +1,5 @@
 from django.db import models
-
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 class BgImages(models.Model):
@@ -36,3 +36,8 @@ class Clients(models.Model):
     def __str__(self):
         return self.name
     
+class About_Story(models.Model):
+    image = models.ImageField(upload_to='story/')
+    body = RichTextField(blank=True,null=True)
+    is_show = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)

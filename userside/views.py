@@ -74,3 +74,5 @@ class Product_List(ListView):
         return super().get(request, *args, **kwargs)
 
     
+class About_Us(TemplateView):
+    template_name = 'user/about_us/about_us.html'

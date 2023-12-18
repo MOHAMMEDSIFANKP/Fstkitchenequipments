@@ -9,5 +9,6 @@ urlpatterns = [
     path('category/',Category.as_view(), name='Category'),
     path('product/',Product.as_view(), name='Product'),
     path('clients/',Clients_View.as_view(), name='Clients_View'),
+    path('about_dashboard/',About_Dashboard.as_view(), name='About_Dashboard'),
 
 ]

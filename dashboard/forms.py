@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django import forms
 from .models import *
 from PIL import Image
+from django.forms import CharField
 
 class CustomAuthenticationForm(AuthenticationForm):
     def clean_field(self):
@@ -134,4 +135,32 @@ class ClientsForms(forms.ModelForm):
             raise ValidationError('This field is required.')
         name = name.upper()
         return name
+
+class AboutOurStoryForms(forms.ModelForm):
+    class Meta:
+        model = About_Story
+        fields = ('image','body')
+        widgets = {
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'id': 'image-input', 'onchange': 'previewImage()'}),
+        }
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        if not image:
+            raise ValidationError('Please upload a image')  
+        try:
+            with Image.open(image) as img:
+                allowed_formats = ['PNG', 'JPEG', 'JPG', 'WEBP', 'SVG']
+                if img.format.upper() not in allowed_formats:
+                    raise ValidationError('Invalid image format. Please upload a valid image.')
+
+        except Exception as e:
+            raise ValidationError('Error reading the image file.')
+        return image
+    
+    def clean_body(self):
+        body = self.cleaned_data["body"]
+        
+        if not body:
+            raise ValidationError("Body field is required.")
+        return body
     
