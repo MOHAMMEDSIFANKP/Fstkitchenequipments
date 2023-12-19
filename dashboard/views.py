@@ -137,12 +137,16 @@ class Product(CustomLoginRequiredAdmin,FormView):
         context['products_data'] = Products.objects.all()
         context['category_data'] = Categories.objects.all().order_by('name')
         return context
-
+    
     def get(self, request, *args, **kwargs):
         if request.GET.get('methods') == 'search':
             query = request.GET.get('query', '').strip()    
-            instance_data = Products.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query))
-            return render(request, 'dashboard/products/search_data.html', {'products_data': instance_data})
+            category_id = request.GET.get('category_id', '').strip()
+            if category_id and category_id != 'all':
+                instance_data = Products.objects.filter(category_id=category_id, name__icontains=query) | Products.objects.filter(category_id=category_id, category__name__icontains=query)
+            else:
+                instance_data = Products.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query))
+            return render(request, 'dashboard/products/search_data.html', {'products_data': instance_data, 'category_id': category_id})
 
         return super().get(request, *args, **kwargs)
 

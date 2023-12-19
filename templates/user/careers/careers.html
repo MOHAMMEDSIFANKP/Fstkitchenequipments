@@ -14,6 +14,11 @@ kichen equipments{% endblock %} {% block body %}
         border-radius: 5px;
         height: 45px;
         width: 100%;
+        transition: border-color 0.3s;
+    }
+    .career-main-div .row input:focus,
+    .career-main-div .row textarea:focus {
+        border-color: black;
     }
     .career-main-div .rows textarea{
         width: 100%;
@@ -22,6 +27,7 @@ kichen equipments{% endblock %} {% block body %}
         padding: 10px 20px;
         resize: none;
         border-radius: 5px;
+        transition: border-color 0.3s;
     }
     .career-main-div .rows button{
         border: 2px solid #ebebeb;
@@ -89,7 +95,7 @@ kichen equipments{% endblock %} {% block body %}
                 </div>
             <div class="row rows">
                 <div class="col-md-6 inputdivs">
-                    <input type="text" name="mobile_number" placeholder="Phone Number*">
+                    <input type="number" name="mobile_number" placeholder="Phone Number*">
                     <small> <i class="text-danger" id="mobile_number-error"></i></small>
                 </div>
                 <div class="col-md-6 inputdivs">
@@ -141,6 +147,7 @@ kichen equipments{% endblock %} {% block body %}
                         $('#forms-container').hide();                        
                         $('#success-container').show();
                     } else {
+                        updateErrorMessages(response.errors)
                     }
 				},
 				error: function (xhr, status, error) {

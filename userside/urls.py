@@ -7,5 +7,6 @@ urlpatterns = [
     path('products/', Product_List.as_view(), name='Product_List'),
     path('about/', About_Us.as_view(), name='About_Us'),
     path('careers/', Careers_Page.as_view(), name='Careers_Page'),
+    path('contact/', Contact_Page.as_view(), name='Contact_Page'),
 ]
 

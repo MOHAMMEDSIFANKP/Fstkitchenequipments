@@ -1,0 +1,282 @@
+{% extends "user/base.html" %} 
+{% load static %}
+{% block title %}Contact Us | Fst kichen equipments{% endblock %} {% block body %}
+<style>
+    .main-div{
+        display: flex;
+        font-family: Poppins, sans-serif;
+        color: #333333;
+        gap: 4%;
+    }
+    .main-div .main-headding{
+        font-weight:600;
+        font-size:30px;
+    }
+    .main-div .line{
+        width: 80%;
+    }
+    .contact-main-div{
+        width: 30%;
+        padding-left: 6%;
+    }
+    .contact-main-div .sub-headding{
+        font-size: 20px;
+        line-height: 24px;
+        text-align: left;
+        font-weight: 600;
+    }
+    .main-div .small-text{
+        font-size: 13px;
+        list-style: 23px;
+        text-align: left;
+        word-wrap: break-word;
+    }
+    .career-main-div {
+        width: 70%;
+        padding-right: 6%;
+
+    }
+    .career-main-div .rows{
+        padding-bottom: 1rem;
+    }
+    .career-main-div .row input{
+        border: 1px solid #dddddd;
+        padding: 5px 20px;
+        border-radius: 5px;
+        height: 45px;
+        width: 100%;
+        transition: border-color 0.3s;
+    }
+    
+    .career-main-div .row input:focus,
+    .career-main-div .row textarea:focus {
+        border-color: black;
+    }
+    .career-main-div .rows textarea{
+        width: 100%;
+        height: 200px;
+        border: 1px solid #eeeeee;
+        padding: 10px 20px;
+        resize: none;
+        border-radius: 5px;
+        transition: border-color 0.3s;
+    }
+    .career-main-div .rows button{
+        border: 2px solid #ebebeb;
+        margin: 5px 15px;
+        padding: 15px 35px;
+        text-transform: capitalize;
+    }
+    .container.success-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+
+    .content-wrapper {
+        text-align: center;
+    }
+
+    .image-container {
+        margin-bottom: 20px; 
+        color: black;
+    }
+
+    .text-container {
+        font-size: 16px
+    }
+
+    .large-text {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    @media (max-width: 767px) {
+        .main-div{
+        display: block;
+        padding-left: 5%;
+        padding-right: 5%;
+        }
+        .contact-main-div{
+            width: 100%;
+            padding-left: 0%;
+        }
+        .career-main-div {
+            width: 100%;
+         
+        }
+        .career-main-div .rows{
+        padding-bottom: 0.3rem;
+        }
+        .career-main-div .row .inputdivs{
+            margin-bottom: 1rem;
+        }
+    }
+    @media only screen and (min-width: 601px) and (max-width: 1024px) {
+        .main-div{
+        display: block;
+        padding-left: 10%;
+        padding-right: 10%;
+        }
+        .contact-main-div{
+            width: 100%;
+            padding-left: 0%;
+        }
+        .career-main-div {
+            width: 100%;
+            margin-right: 10%;
+            margin-top: 8%;
+        }
+    }
+</style>
+<div style="height: 7%" class="space-div"></div>
+<div class="bg0 m-t-23 " style="margin-top: 10px">
+    <!-- Title page -->
+    <section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('{% static "images/contact.jpg"%}');">
+		<h2 class=" ltext-105 cl0 txt-center">
+        Contact Us
+        </h2>
+    </section>
+    <!-- Content page -->
+    <section class="bg0 p-t-75 p-b-120 container main-div" >
+        <div class="contact-main-div">
+            <h3 class="cl2 p-b-16 main-headding">
+                Contact Us
+            </h3>
+            <div>
+                <div class="d-flex mt-3 mb-3" style="gap:12px">
+                    <svg style="opacity: 90%;" xmlns="http://www.w3.org/2000/svg" height="26" width="30" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M64 32C46.3 32 32 46.3 32 64V304v48 80c0 26.5 21.5 48 48 48H496c26.5 0 48-21.5 48-48V304 152.2c0-18.2-19.4-29.7-35.4-21.1L352 215.4V152.2c0-18.2-19.4-29.7-35.4-21.1L160 215.4V64c0-17.7-14.3-32-32-32H64z"/></svg>
+                    <p class="sub-headding">Corporate Office</p>
+                </div>
+                <div>
+                    <p class="small-text">14E, Myladi, Pookottur P.O. Malappuram, Kerala, India - 676517</p>
+                    <p class="small-text">+91 9562040856</p> 
+                </div>
+            </div>
+            <div class="py-2">
+                <hr class="line">
+            </div>
+            <div class="d-flex mt-3 mb-3" style="gap:12px">
+                <svg style="opacity: 90%;" xmlns="http://www.w3.org/2000/svg" height="26" width="30" viewBox="0 0 576 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M64 32C46.3 32 32 46.3 32 64V304v48 80c0 26.5 21.5 48 48 48H496c26.5 0 48-21.5 48-48V304 152.2c0-18.2-19.4-29.7-35.4-21.1L352 215.4V152.2c0-18.2-19.4-29.7-35.4-21.1L160 215.4V64c0-17.7-14.3-32-32-32H64z"/></svg>
+                <p class="sub-headding">Register For Service</p>
+            </div>
+            <div>
+                <p class="small-text">+91 9562040856</p> 
+            </div>
+        </div>
+        <!-- Contact forms -->
+        <div class="career-main-div" id="forms-container">
+            <form action="{%url 'Careers_Page' %}" id="careers-forms">
+                    {% csrf_token %}
+                <h3 class="main-headding mb-3 cl2 p-b-16">
+                    Customer Care | +91 9526 290 555
+                </h3>
+                    <div class="row rows">
+                        <div class="col-md-6 inputdivs">
+                            <input type="text" name="name" placeholder="Name*">
+                        <small> <i class="text-danger" id="name-error"></i></small>
+                        </div>
+                        <div class="col-md-6 inputdivs">
+                            <input type="text" name="email" placeholder="Email*">
+                            <small> <i class="text-danger" id="email-error"></i></small>
+                        </div>
+                    </div>
+                <div class="row rows">
+                    <div class="col-md-6 inputdivs">
+                        <input type="number" name="mobile_number" placeholder="Phone Number*">
+                        <small> <i class="text-danger" id="mobile_number-error"></i></small>
+                    </div>
+                    <div class="col-md-6 inputdivs">
+                        <input type="text" name="subject" placeholder="Subject*">
+                        <small> <i class="text-danger" id="subject-error"></i></small>
+                    </div>
+                </div>
+                <div class="row rows">
+                    <div class="col-md-12 inputdivs">
+                        <input type="text" name="address" placeholder="Address*">
+                        <small> <i class="text-danger" id="address-error"></i></small>
+                    </div>
+                </div>
+                <div class="row rows">
+                    <div class="col-md-12">
+                        <textarea name="address" name="" id="" cols="30" rows="10" placeholder="Type your message here.."></textarea>
+                        <small> <i class="text-danger" id="address-error"></i></small>
+                    </div>
+                </div>
+                <div class="row rows">
+                        <button type="submit" class="pointer hov-btn3 btn">Register For Service</button>
+                </div>
+            </form>
+        </div>
+        <!-- Contact forms -->
+        <!-- Success page -->
+        <div class="container success-container" id="success-container" style="display: none;">
+            <div class="content-wrapper">
+                <div class="image-container">
+                    <img src="{% static 'images/emailsuccess.png' %}" alt="">
+                </div>
+                <div class="text-container">
+                    <p class="large-text mtext-111 cl2 p-b-16">Application submitted successfully!</p>
+                    <p >We've received your application. Once we check it, we'll be in touch soon.</p>
+                </div>
+            </div>
+        </div> 
+        <!-- Success page -->
+    </section>
+</div>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+	// Add Function
+	$(document).ready(function () {
+		$('#careers-forms').submit(function (e) {
+			e.preventDefault();
+			$.ajax({
+				type: 'POST',
+				url: $(this).attr('action'),
+				data: new FormData(this),
+				processData: false,
+				contentType: false,
+				success: function (response) {
+                    if (response.success) {
+                        $('#forms-container').hide();                        
+                        $('#success-container').show();
+                    } else {
+                        updateErrorMessages(response.errors)
+                    }
+				},
+				error: function (xhr, status, error) {
+					alert('Something wrong')
+				}
+			});
+		});
+	});
+
+	function updateErrorMessages(errors) {
+		if (errors.name) {
+			$('#' + 'name-error').text(errors.name);
+		} else {
+			$('#' + 'name-error').text('')
+		}
+		if (errors.email) {
+			$('#' + 'email-error').text(errors.email);
+		} else {
+			$('#' + 'email-error').text('')
+		}
+		if (errors.mobile_number) {
+			$('#' + 'mobile_number-error').text(errors.mobile_number);
+		} else {
+			$('#' + 'mobile_number-error').text('')
+		}
+        if (errors.cv) {
+			$('#' + 'cv-error').text(errors.cv);
+		} else {
+			$('#' + 'cv-error').text('')
+		}
+        if (errors.address) {
+			$('#' + 'address-error').text(errors.address);
+		} else {
+			$('#' + 'address-error').text('')
+		}
+	}
+</script>
+{% endblock %}

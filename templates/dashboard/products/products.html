@@ -47,8 +47,11 @@
 					<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
 						<div class="mb-3">
 							<div class="flex-w p-t-4 m-r--5">
+                                <a href="#" data-category="all" class="flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5 category-link">
+									All
+								</a>
 								{% for category in category_data %}
-                                <a href="#" class="category-link flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5">
+                                <a href="#" data-category="{{category.id}}" class="category-link flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5">
 									{{category.name}}
 								</a>
                                 {% endfor %}
@@ -122,6 +125,7 @@
                         <div class="card-body">
 
                             <table class="table table-borderless datatable refresh" id="search-results">
+                                <input type="hidden" value="{{category_id}}" id="category_id">
                                 <thead>
                                     <tr>
                                         <th scope="col">id</th>
@@ -414,7 +418,7 @@
                 $.ajax({
                     type: "GET",
                     url: "{%url 'Product'%}",
-                    data: { "query": query , "methods":'search'},
+                    data: { "query": query , "methods":'search', 'category_id': $("#category_id").val()},
                     success: function (data) {
                         $("#search-results").html(data);
                     }
@@ -422,6 +426,21 @@
             }
         
         });
+        // Category change function
+        $(".category-link").on("click", function (e) {
+            e.preventDefault();
+            var categoryId = $(this).data("category");
+            $("#category_id").val(categoryId); 
+            $.ajax({
+                type: "GET",
+                url: "{% url 'Home' %}",
+                data: { "category_id": categoryId, "methods": 'category' },
+                success: function (data) {
+                    $("#search-results").html(data);
+                }
+            });
+        });
+
 
 
     // Image-show

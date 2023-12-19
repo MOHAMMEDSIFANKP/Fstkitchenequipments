@@ -89,3 +89,6 @@ class Careers_Page(FormView):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
+        
+class Contact_Page(TemplateView):
+    template_name = 'user/contact_us/contact_us.html'
