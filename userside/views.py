@@ -3,7 +3,7 @@ from django.views.generic import *
 from dashboard.models import *
 from django.http import JsonResponse
 from django.db.models import Q
-
+from .foms import *
 # Create your views here.
 
 class Home(TemplateView):
@@ -76,3 +76,16 @@ class Product_List(ListView):
     
 class About_Us(TemplateView):
     template_name = 'user/about_us/about_us.html'
+
+
+class Careers_Page(FormView):
+    form_class = CareersForms
+    template_name = 'user/careers/careers.html'
+    
+    def post(self, request, *args, **kwargs):
+        form = CareersForms(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})

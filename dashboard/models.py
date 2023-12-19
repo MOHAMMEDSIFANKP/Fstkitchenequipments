@@ -36,6 +36,15 @@ class Clients(models.Model):
     def __str__(self):
         return self.name
     
+class Careers(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    mobile_number = models.CharField(max_length=20, verbose_name="Mobile Number")
+    cv = models.FileField(upload_to='cv/')
+    address = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class About_Story(models.Model):
     image = models.ImageField(upload_to='story/')
     body = RichTextField(blank=True,null=True)

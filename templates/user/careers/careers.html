@@ -1,0 +1,181 @@
+{% extends "user/base.html" %} {% load static %} {% block title %}Careers | Fst
+kichen equipments{% endblock %} {% block body %}
+<style>
+    .career-main-div {
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+    .career-main-div .rows{
+        padding-bottom: 1rem;
+    }
+    .career-main-div .row input{
+        border: 1px solid #dddddd;
+        padding: 5px 20px;
+        border-radius: 5px;
+        height: 45px;
+        width: 100%;
+    }
+    .career-main-div .rows textarea{
+        width: 100%;
+        height: 200px;
+        border: 1px solid #eeeeee;
+        padding: 10px 20px;
+        resize: none;
+        border-radius: 5px;
+    }
+    .career-main-div .rows button{
+        border: 2px solid #ebebeb;
+        margin: 5px 15px;
+        padding: 15px 35px;
+        text-transform: capitalize;
+    }
+    .container.success-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+
+    .content-wrapper {
+        text-align: center;
+    }
+
+    .image-container {
+        margin-bottom: 20px; 
+        color: black;
+    }
+
+    .text-container {
+        font-size: 16px
+    }
+
+    .large-text {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    @media (max-width: 767px) {
+        .career-main-div .rows{
+        padding-bottom: 0.3rem;
+        }
+        .career-main-div .row .inputdivs{
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+<div style="height: 7%" class="space-div"></div>
+<div class="bg0 m-t-23 " style="margin-top: 10px">
+    <!-- Title page -->
+    <section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('{% static "images/career-hd.jpg"%}');">
+		<h2 class=" ltext-105 cl0 txt-center">
+        Careers
+        </h2>
+    </section>
+    <!-- Content page -->
+    <section class="bg0 p-t-75 p-b-120 container">
+        <div class="career-main-div" id="forms-container">
+            <form action="{%url 'Careers_Page' %}" id="careers-forms">
+                {% csrf_token %}
+            <h3 class="mtext-111 cl2 p-b-16">
+               Join with Us
+            </h3>
+                <div class="row rows">
+                    <div class="col-md-6 inputdivs">
+                        <input type="text" name="name" placeholder="Name*">
+                       <small> <i class="text-danger" id="name-error"></i></small>
+                    </div>
+                    <div class="col-md-6 inputdivs">
+                        <input type="text" name="email" placeholder="Email*">
+                        <small> <i class="text-danger" id="email-error"></i></small>
+                    </div>
+                </div>
+            <div class="row rows">
+                <div class="col-md-6 inputdivs">
+                    <input type="text" name="mobile_number" placeholder="Phone Number*">
+                    <small> <i class="text-danger" id="mobile_number-error"></i></small>
+                </div>
+                <div class="col-md-6 inputdivs">
+                    <input name="cv" type="file" accept=".pdf, .csv, .doc, .docx">
+                    <small> <i class="text-danger" id="cv-error"></i></small>
+                </div>
+            </div>
+            <div class="row rows">
+                <div class="col-md-12">
+                    <textarea name="address" name="" id="" cols="30" rows="10" placeholder="Type your Address here.."></textarea>
+                    <small> <i class="text-danger" id="address-error"></i></small>
+                </div>
+            </div>
+            <div class="row rows">
+                    <button type="submit" class="pointer hov-btn3 btn">Send Message</button>
+            </div>
+        </form>
+        </div>
+        <!-- Success page -->
+        <div class="container success-container" id="success-container" style="display: none;">
+            <div class="content-wrapper">
+                <div class="image-container">
+                    <img src="{% static 'images/emailsuccess.png' %}" alt="">
+                </div>
+                <div class="text-container">
+                    <p class="large-text mtext-111 cl2 p-b-16">Application submitted successfully!</p>
+                    <p >We've received your application. Once we check it, we'll be in touch soon.</p>
+                </div>
+            </div>
+        </div> 
+    </section>
+</div>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+	// Add Function
+	$(document).ready(function () {
+		$('#careers-forms').submit(function (e) {
+			e.preventDefault();
+			$.ajax({
+				type: 'POST',
+				url: $(this).attr('action'),
+				data: new FormData(this),
+				processData: false,
+				contentType: false,
+				success: function (response) {
+                    if (response.success) {
+                        $('#forms-container').hide();                        
+                        $('#success-container').show();
+                    } else {
+                    }
+				},
+				error: function (xhr, status, error) {
+					alert('Something wrong')
+				}
+			});
+		});
+	});
+
+	function updateErrorMessages(errors) {
+		if (errors.name) {
+			$('#' + 'name-error').text(errors.name);
+		} else {
+			$('#' + 'name-error').text('')
+		}
+		if (errors.email) {
+			$('#' + 'email-error').text(errors.email);
+		} else {
+			$('#' + 'email-error').text('')
+		}
+		if (errors.mobile_number) {
+			$('#' + 'mobile_number-error').text(errors.mobile_number);
+		} else {
+			$('#' + 'mobile_number-error').text('')
+		}
+        if (errors.cv) {
+			$('#' + 'cv-error').text(errors.cv);
+		} else {
+			$('#' + 'cv-error').text('')
+		}
+        if (errors.address) {
+			$('#' + 'address-error').text(errors.address);
+		} else {
+			$('#' + 'address-error').text('')
+		}
+	}
+</script>
+{% endblock %}

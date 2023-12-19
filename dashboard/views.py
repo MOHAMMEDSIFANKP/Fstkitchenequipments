@@ -203,8 +203,31 @@ class Clients_View(CustomLoginRequiredAdmin,FormView):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
-        
 
+
+class Careers_Dashboard(CustomAuthenticationForm, ListView):
+    template_name = 'dashboard/career/career.html'
+    context_object_name = 'data_list'
+    model = Careers
+    ordering = ['-created_at']
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('methods') == 'search':
+            query = request.GET.get('query')
+            queryset = Careers.objects.filter(Q(name__icontains = query) | Q(email__icontains=query) | Q(mobile_number__icontains=query) | Q(address__icontains=query))
+            return render(request, 'dashboard/career/search_data.html', {'data_list': queryset})
+        return super().get(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        form = CareerFilterForm(request.POST)
+        if form.is_valid():
+            from_date = form.cleaned_data['from_date']
+            to_date = form.cleaned_data['to_date']
+            queryset = Careers.objects.filter(created_at__date__range=[from_date, to_date])
+            return render(request, 'dashboard/career/search_data.html', {'data_list': queryset})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+        
 class About_Dashboard(CustomLoginRequiredAdmin, FormView):
     template_name = 'dashboard/about/about.html'
     form_class = AboutOurStoryForms
