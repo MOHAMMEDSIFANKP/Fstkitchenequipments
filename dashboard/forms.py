@@ -150,6 +150,20 @@ class CareerFilterForm(forms.Form):
                 raise forms.ValidationError('From Date must be less than or equal to To Date.')
         return cleaned_data
 
+class ContactsFilterForm(forms.Form):
+    from_date = forms.DateField(label='From Date')
+    to_date = forms.DateField(label='To Date')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        from_date = cleaned_data.get('from_date')
+        to_date = cleaned_data.get('to_date')
+
+        if from_date and to_date:
+            if from_date > to_date:
+                raise forms.ValidationError('From Date must be less than or equal to To Date.')
+        return cleaned_data
+    
 class AboutOurStoryForms(forms.ModelForm):
     class Meta:
         model = About_Story

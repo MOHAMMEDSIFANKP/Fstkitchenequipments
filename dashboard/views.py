@@ -139,7 +139,7 @@ class Product(CustomLoginRequiredAdmin,FormView):
         return context
     
     def get(self, request, *args, **kwargs):
-        if request.GET.get('methods') == 'search':
+        if request.GET.get('methods') == 'search' or request.GET.get('methods') == 'category':
             query = request.GET.get('query', '').strip()    
             category_id = request.GET.get('category_id', '').strip()
             if category_id and category_id != 'all':
@@ -231,7 +231,33 @@ class Careers_Dashboard(CustomAuthenticationForm, ListView):
             return render(request, 'dashboard/career/search_data.html', {'data_list': queryset})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
-        
+
+class Contacts_dashboard(CustomAuthenticationForm, ListView):
+    template_name = 'dashboard/contacts/contacts.html'
+    form_class = ContactsFilterForm
+    context_object_name = 'data_list'
+    model = Contacts
+    ordering = ['-created_at']
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('methods') == 'search':
+            query = request.GET.get('query')
+            queryset = Contacts.objects.filter(Q(name__icontains = query) | Q(email__icontains=query) | Q(mobile_number__icontains=query) | Q(address__icontains=query) | Q(message__icontains=query) | Q(subject__icontains=query))
+            return render(request, 'dashboard/contacts/search_data.html', {'data_list': queryset})
+        return super().get(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            from_date = form.cleaned_data['from_date']
+            to_date = form.cleaned_data['to_date']
+            queryset = Contacts.objects.filter(created_at__date__range=[from_date, to_date])
+            return render(request, 'dashboard/contacts/search_data.html', {'data_list': queryset})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+
+
+
 class About_Dashboard(CustomLoginRequiredAdmin, FormView):
     template_name = 'dashboard/about/about.html'
     form_class = AboutOurStoryForms

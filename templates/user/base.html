@@ -34,7 +34,9 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'css/util.css' %}">
 	<link rel="stylesheet" type="text/css" href="{%static 'css/main.css' %}">
+	<link rel="stylesheet" type="text/css" href="{%static 'css/custom.css' %}">
 <!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 <style>
 	 .scroll-container {
     width: 100%;
@@ -77,6 +79,11 @@
 		display: none;
 	}
 	}
+	/* Category select items */
+	.select-item:focus{
+		background-color: #717fe0;
+		color: white;
+	}
 </style>
 <body class="animsition">
 	
@@ -100,7 +107,36 @@
 });
 
   </script>
-  
+
+<!-- Our Cliends moving cororcels -->
+
+  <!-- Add jQuery (required by Slick Carousel) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Add Slick Carousel JS -->
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+		$('.slick-carousel').slick({
+            slidesToShow: 6, // Number of items to show (1 for one item at a time)
+            slidesToScroll: 1,
+            autoplay: true, // Enable autoplay
+            autoplaySpeed: 2000, // Set the autoplay speed in milliseconds (adjust as needed)
+            responsive: [
+                {
+                    breakpoint: 650,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+    });
+</script>
+
+<!-- End Our Cliends moving cororcels -->
+
 <!--===============================================================================================-->	
 	<script src="{%static 'vendor/jquery/jquery-3.2.1.min.js'%}"></script>
 <!--===============================================================================================-->

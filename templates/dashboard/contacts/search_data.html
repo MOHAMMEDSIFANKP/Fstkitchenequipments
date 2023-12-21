@@ -1,0 +1,26 @@
+<thead>
+    <tr>
+        <th scope="col">id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Address</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Message</th>
+        <th scope="col">Created at</th>
+    </tr>
+</thead>
+
+{% for category in data_list %}
+<tr>
+    <td> {{category.id}} </td>
+    <td> {{category.name}} </td>
+    <td> {{category.email}} </td>
+    <td> {{category.mobile_number}} </td>
+    <td> {{category.address}} </td>
+    <td> {{category.subject}} </td>
+    <td> {{category.message}} </td>
+    <td> {{category.created_at}} </td>
+</tr>
+{% endfor %}
+</tbody>

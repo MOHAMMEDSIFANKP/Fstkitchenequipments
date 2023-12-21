@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django import forms
-from dashboard.models import Careers
+from dashboard.models import *
 
 class CareersForms(forms.ModelForm):
     class Meta:
@@ -17,3 +17,7 @@ class CareersForms(forms.ModelForm):
             raise ValidationError('Invalid CV format. Please upload a valid CV.')
         return cv
     
+class ContactFroms(forms.ModelForm):
+    class Meta:
+        model = Contacts
+        fields = ('name','email','mobile_number','subject','address','message')

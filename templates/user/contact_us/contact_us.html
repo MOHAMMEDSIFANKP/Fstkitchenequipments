@@ -162,10 +162,11 @@
             <div>
                 <p class="small-text">+91 9562040856</p> 
             </div>
+            
         </div>
         <!-- Contact forms -->
         <div class="career-main-div" id="forms-container">
-            <form action="{%url 'Careers_Page' %}" id="careers-forms">
+            <form action="{%url 'Contact_Page' %}" id="contact-forms">
                     {% csrf_token %}
                 <h3 class="main-headding mb-3 cl2 p-b-16">
                     Customer Care | +91 9526 290 555
@@ -198,8 +199,8 @@
                 </div>
                 <div class="row rows">
                     <div class="col-md-12">
-                        <textarea name="address" name="" id="" cols="30" rows="10" placeholder="Type your message here.."></textarea>
-                        <small> <i class="text-danger" id="address-error"></i></small>
+                        <textarea name="message" name="" id="" cols="30" rows="10" placeholder="Type your message here.."></textarea>
+                        <small> <i class="text-danger" id="message-error"></i></small>
                     </div>
                 </div>
                 <div class="row rows">
@@ -228,7 +229,7 @@
 <script>
 	// Add Function
 	$(document).ready(function () {
-		$('#careers-forms').submit(function (e) {
+		$('#contact-forms').submit(function (e) {
 			e.preventDefault();
 			$.ajax({
 				type: 'POST',
@@ -267,15 +268,20 @@
 		} else {
 			$('#' + 'mobile_number-error').text('')
 		}
-        if (errors.cv) {
-			$('#' + 'cv-error').text(errors.cv);
+        if (errors.subject) {
+			$('#' + 'subject-error').text(errors.subject);
 		} else {
-			$('#' + 'cv-error').text('')
+			$('#' + 'subject-error').text('')
 		}
         if (errors.address) {
 			$('#' + 'address-error').text(errors.address);
 		} else {
 			$('#' + 'address-error').text('')
+		}
+        if (errors.message) {
+			$('#' + 'message-error').text(errors.message);
+		} else {
+			$('#' + 'message-error').text('')
 		}
 	}
 </script>

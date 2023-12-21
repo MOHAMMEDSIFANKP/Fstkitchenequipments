@@ -90,5 +90,14 @@ class Careers_Page(FormView):
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
         
-class Contact_Page(TemplateView):
+class Contact_Page(FormView):
+    form_class = ContactFroms
     template_name = 'user/contact_us/contact_us.html'
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False,'errors': form.errors})

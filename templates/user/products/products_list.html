@@ -42,11 +42,11 @@
 					<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
 						<div class="mb-3">
 							<div class="flex-w p-t-4 m-r--5">
-								<a href="#" data-category="all" class="flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5 category-link">
+								<a href="#" data-category="all" class="select-item flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5 category-link">
 									All
 								</a>
 								{% for category in data_list.category_data %}
-                                <a href="#" data-category="{{category.id}}" class="flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5 category-link">
+                                <a href="#" data-category="{{category.id}}" class="select-item flex-c-m hov-btn3 cl6 size-301 bor7 p-lr-15 trans-04 m-r-5 m-b-5 category-link">
 									{{category.name}}
 								</a>
                                 {% endfor %}
