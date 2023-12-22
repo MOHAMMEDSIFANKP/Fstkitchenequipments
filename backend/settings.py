@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'userside',
     'dashboard',
     'ckeditor',
+    'imagekit',
 ]
 
 MIDDLEWARE = [

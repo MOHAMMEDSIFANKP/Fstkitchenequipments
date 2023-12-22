@@ -78,6 +78,9 @@ class About_Us(TemplateView):
     template_name = 'user/about_us/about_us.html'
 
 
+class Projects_Page(TemplateView):
+    template_name = 'user/projects/projects.html'
+
 class Careers_Page(FormView):
     form_class = CareersForms
     template_name = 'user/careers/careers.html'
@@ -101,3 +104,4 @@ class Contact_Page(FormView):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False,'errors': form.errors})
+
