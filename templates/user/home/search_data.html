@@ -1,5 +1,7 @@
+{% load static %}
 <input type="hidden" value="{{category_id}}" id="category_id">
 <div class="row isotope-grid ">
+	{% if products_data %}
 	{% for product in products_data %}
 	<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
 		<!-- Block2 -->
@@ -34,4 +36,9 @@
 		</div>
 	</div>
 	{% endfor %}
+	{% else %}
+	<div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center p-b-35 isotope-item women">
+		<img src="{%static 'images/product-not-found.jpg'%}" alt="">
+	</div>
+	{% endif %}
 </div>

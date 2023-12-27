@@ -4,7 +4,8 @@ from django.core.exceptions import ValidationError
 from django import forms
 from .models import *
 from PIL import Image
-from django.forms import CharField
+from ckeditor.widgets import CKEditorWidget
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     def clean_field(self):
@@ -17,7 +18,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         if user is not None and not user.is_superuser:
             raise ValidationError('You are not authorized to access the dashboard.')
         return cleaned_data
-    
+
 class BgImagesForms(forms.ModelForm):
     class Meta:
         model = BgImages
@@ -163,13 +164,15 @@ class ContactsFilterForm(forms.Form):
             if from_date > to_date:
                 raise forms.ValidationError('From Date must be less than or equal to To Date.')
         return cleaned_data
-    
+
+
 class AboutOurStoryForms(forms.ModelForm):
     class Meta:
         model = About_Story
         fields = ('image','body')
         widgets = {
             'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'id': 'image-input', 'onchange': 'previewImage()'}),
+            'body': CKEditorWidget(),
         }
     def clean_image(self):
         image = self.cleaned_data.get("image")
@@ -186,8 +189,7 @@ class AboutOurStoryForms(forms.ModelForm):
         return image
     
     def clean_body(self):
-        body = self.cleaned_data["body"]
-        
+        body = self.cleaned_data.get("body")
         if not body:
             raise ValidationError("Body field is required.")
         return body

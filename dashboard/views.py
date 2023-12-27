@@ -89,7 +89,9 @@ class BackgroudImages(CustomLoginRequiredAdmin,FormView):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
-        
+    def put(self, request, *args, **kwargs):
+        print('put methods')
+        return super().get(request, *args, **kwargs)
 
 class Category(CustomLoginRequiredAdmin,FormView):
     template_name = 'dashboard/category/category.html'
@@ -275,7 +277,7 @@ class About_Dashboard(CustomLoginRequiredAdmin, FormView):
         pk = request.POST.get('id')
         methods = request.POST.get('methods')
 
-        if pk and methods == 'put':
+        if pk:
             instance = get_object_or_404(About_Story, pk=pk)
             form = AboutOurStoryForms(request.POST, request.FILES, instance=instance)
         elif pk and methods == 'delete':
@@ -290,3 +292,9 @@ class About_Dashboard(CustomLoginRequiredAdmin, FormView):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
+
+
+class Updateviews(UpdateView):
+    model = About_Story
+    fileds = ['image','body']
+    

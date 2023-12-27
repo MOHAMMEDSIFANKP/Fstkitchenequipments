@@ -74,7 +74,10 @@ class Contacts(models.Model):
 
 class About_Story(models.Model):
     image = models.ImageField(upload_to='story/')
-    body = RichTextField(blank=True,null=True)
-    is_show = models.BooleanField(default=True)
+    cropped_image = ImageSpecField(source='image',
+                                processors=[ResizeToFill(1200, 1200)],
+                                format='JPEG',
+                                options={'quality': 100})
+    body = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

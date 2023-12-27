@@ -1,6 +1,6 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
-{% block title %}Products Management | Dashboard{% endblock %}
+{% block title %}About | Dashboard{% endblock %}
 {% block body %}
 <!--  Body Wrapper -->
 <div class="page-wrapper" style="background-color: white;" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -16,129 +16,152 @@
            <div class="flex-w flex-sb-m p-b-52">
         </div>
             <div>
-                <div class="col-12 container">
-                    <div class="card recent-sales overflow-auto">
-                        <div class="card-body refresh">
-                            <div style="display: flex; justify-content: space-between;">
-                                <h3 class="mtext-111 cl2 p-b-16">
-                                    Our Story
-                                </h3>
-                                {% if story_data %}
-                                <button class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4"  data-bs-toggle="modal" data-bs-target="#editmodal">
-                                    <i title="" class="fa fa-edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                      </svg></i>
-                               </button>
-                                {% else %}
-                                <button class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4"  data-bs-toggle="modal" data-bs-target="#addmodal">
-                                    Add
-                               </button>
-                                {% endif %}
-        
-                            </div>
-                            <p class="stext-113 cl6 p-b-26 pt-2">
-                                {{story_data.body |safe}}
-                            </p> 
-                        </div>
-                    </div>
-                    <!-- Our Story Add Modal -->
-                    <div class="d-flex justify-content-between align-items-center ">
-                        <div class="modal fade  modal-lg" id="addmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Our Story</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                   <div class="modal-body">
-                                        <form action="{%url 'About_Dashboard'%}" id="about-story-forms"
-                                            enctype="multipart/form-data" method="POST">
-                                            {% csrf_token %}
-                                            <div style="width: 100px;"
-                                            class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
-                                            <img class="img-fluid w-100"
-                                                src="" alt=""  id="image-preview" style="display: none;">
-                                             </div> 
-                                            <small id="image-error" class="text-danger text-center "></small>
-                                            <small id="body-error" class="text-danger text-center "></small>      
-                                            {{ form.media }}
-                                            {{ form.as_p }}
-                                            {{ form.image.errors }}
-                                            {{ form.body.errors }}
-                                            <div class="d-flex justify-content-center">
-                                                <button type="submit"
-                                                    class="btn btn-primary btn-lg gradient-custom-4 w-50 text-light"
-                                                    type="submit">Save Changes</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Our Story Add Modal -->
-                    <!-- Edit Our Story Modal -->
-                    <div class="d-flex justify-content-between align-items-center ">
-                        <div class="modal fade  modal-lg" id="editmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Our Story</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                   <div class="modal-body">
-                                        <form action="{%url 'About_Dashboard'%}" id="about-story-forms"
-                                            enctype="multipart/form-data" method="POST">
-                                            {% csrf_token %}
-                                            <div style="width: 100px;"
-                                            class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
-                                            <img class="img-fluid w-100"
-                                                src="" alt=""  id="image-preview" style="display: none;">
-                                             </div>
-                                            
-                                            <small id="image-error" class="text-danger text-center "></small>
-                                            <small id="body-error" class="text-danger text-center "></small>      
-                                            {{ form.media }}
-                                            {{ form.as_p }}
-                                            {{ form.image.errors }}
-                                            {{ form.body.errors }}
-                                            <div class="d-flex justify-content-center">
-                                                <button type="submit"
-                                                    class="btn btn-primary btn-lg gradient-custom-4 w-50 text-light"
-                                                    type="submit">Save Changes</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- EndEdit Our Story Modal -->
+                <div class="col-12 container refresh">
                     <div class="card recent-sales overflow-auto">
                         <div class="card-body">
-                            <h3 class="mtext-111 cl2 p-b-16">
-                                Our Mission
-                            </h3>
-    
-                            <p class="stext-113 cl6 p-b-26">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat consequat enim, non auctor massa ultrices non. Morbi sed odio massa. Quisque at vehicula tellus, sed tincidunt augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas varius egestas diam, eu sodales metus scelerisque congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas gravida justo eu arcu egestas convallis. Nullam eu erat bibendum, tempus ipsum eget, dictum enim. Donec non neque ut enim dapibus tincidunt vitae nec augue. Suspendisse potenti. Proin ut est diam. Donec condimentum euismod tortor, eget facilisis diam faucibus et. Morbi a tempor elit.
-                            </p>
-                           
+                            <!-- Content page -->
+                            <div class="row pb-5">
+                                <!-- Add button -->
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="mtext-111 cl2 p-b-16">
+                                        Our Story
+                                    </h3>
+                                    <button class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-b-4"  data-bs-toggle="modal" id="editButton" data-bs-target="#addmodal">
+                                        {% if story_data %}
+                                        Edit
+                                        {% else %}
+                                        Add
+                                        {% endif %}
+                                   </button>
+                                </div>
+                                 <!-- Add modal -->
+                                    <div class="d-flex justify-content-between align-items-center ">
+                                        <div class="modal fade  modal-lg" id="addmodal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Our Story</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                        <div class="modal-body">
+                                                                {% if story_data %}
+                                                                <form action="{%url 'About_Dashboard'%}" id="about-story-forms"
+                                                                enctype="multipart/form-data" method="POST">
+                                                                {% else %}
+                                                                <form action="{%url 'About_Dashboard'%}" id="about-story-forms"
+                                                                enctype="multipart/form-data" method="POST">
+                                                                {% endif %}
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="id" value="{{story_data.id}}">
+                                                                <div style="width: 100px;"
+                                                                class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                                                <img class="img-fluid w-100"
+                                                                    src="" alt=""  id="image-preview" style="display: none;">
+                                                                </div> 
+                                                                <small id="image-error" class="text-danger text-center "></small>
+                                                                <small id="body-error" class="text-danger text-center "></small>      
+                                                                {{ form.media }}
+                                                                {{ form.as_p }}
+                                                                {{ form.body.errors }}
+                                                                <div class="d-flex justify-content-center">
+                                                                    <button type="submit"
+                                                                        class="btn btn-primary btn-lg gradient-custom-4 w-20 text-light"
+                                                                        type="submit">Save Changes</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Add modal -->
+                                <!-- End Add button -->
+                                <!-- Our story card -->
+                                {% if story_data %}
+                                <div class="col-md-7 col-lg-8">
+                                    <div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
+                                        <p class="stext-113 cl6 p-b-26">
+                                            {{story_data.body |safe}}
+                                        </p>
+                                    </div>
+                                </div>
+                
+                                <div class="col-11 col-md-5 col-lg-4 m-lr-auto">
+                                    <div class="how-bor1 ">
+                                        <div class="hov-img0">
+                                            <img src="{{story_data.cropped_image.url}}" alt="IMG">
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <!-- End Our story card -->
+                            </div>
                         </div>
                     </div>
-                </div><!-- End Recent Sales -->
+                    
+                    <div class="card recent-sales overflow-auto">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="order-md-2 col-md-7 col-lg-8 p-b-30">
+                                    <div class="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
+                                        <h3 class="mtext-111 cl2 p-b-16">
+                                            Our Mission
+                                        </h3>
+                
+                                        <p class="stext-113 cl6 p-b-26">
+                                            Mauris non lacinia magna. Sed nec lobortis dolor. Vestibulum rhoncus dignissim risus, sed consectetur erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam maximus mauris sit amet odio convallis, in pharetra magna gravida. Praesent sed nunc fermentum mi molestie tempor. Morbi vitae viverra odio. Pellentesque ac velit egestas, luctus arcu non, laoreet mauris. Sed in ipsum tempor, consequat odio in, porttitor ante. Ut mauris ligula, volutpat in sodales in, porta non odio. Pellentesque tempor urna vitae mi vestibulum, nec venenatis nulla lobortis. Proin at gravida ante. Mauris auctor purus at lacus maximus euismod. Pellentesque vulputate massa ut nisl hendrerit, eget elementum libero iaculis.
+                                        </p>
+                
+                                        <div class="bor16 p-l-29 p-b-9 m-t-22">
+                                            <p class="stext-114 cl6 p-r-40 p-b-11">
+                                                Creativity is just connecting things. When you ask creative people how they did something, they feel a little guilty because they didn't really do it, they just saw something. It seemed obvious to them after a while.
+                                            </p>
+                
+                                            <span class="stext-111 cl8">
+                                                - Steve Job’s 
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                                <div class="order-md-1 col-11 col-md-5 col-lg-4 m-lr-auto p-b-30">
+                                    <div class="how-bor2">
+                                        <div class="hov-img0">
+                                            <img src="{% static "images/about-02.jpg" %}" alt="IMG">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+   
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function handleButtonClick() {
+            var idBodyElements = document.getElementsByClassName('body');
+            console.log(idBodyElements);
+            var storyData = "daxooooo"
+            if (storyData) {
 
+                idBodyElements.value = storyData
+        }
+        }
+
+        var editButton = document.getElementById('editButton');
+
+        editButton.addEventListener('click', handleButtonClick);
+
+    </script>
+        
+        
     <script>
         // Add Function
         $(document).ready(function () {
@@ -151,8 +174,8 @@
                     processData: false,
                     contentType: false,
                     success: function (response) {
-                        $('.refresh').load(location.href + " .refresh");
                         if (response.success) {
+                            $('.refresh').load(location.href + " .refresh");
                             $('#addmodal').modal('hide');
                             $('#about-story-forms')[0].reset();
                             $("#image-preview").css("display", "none");
@@ -168,6 +191,7 @@
         });
 
         function updateErrorMessages(errors) {
+            console.log(errors,'daxooo');
             if (errors.image) {
                 $('#' + 'image-error').text(errors.image);
             } else {
@@ -179,89 +203,6 @@
                 $('#' + 'body-error').text('')
             }
         }
-        // Updating Function
-        $(document).ready(function () {
-            
-            $('#about-story-edit-forms').submit(function (e) {
-                e.preventDefault();
-
-                var id = $(this).find('#story_id').val();
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        if (response.success) {
-                            $('.refresh').load(location.href + " .refresh");
-                            $('#updatemodal' + id).modal('hide');
-                            $('#Productupdated-forms' + id)[0].reset();
-                        } else {
-                            updateErrorMessages(response.errors)
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        alert('Something wrong');
-                    }
-                });
-            });
-
-        });
-
-        // Deleting Function
-        $(document).ready(function () {
-            $(document).on('submit', '[id^="deletefoms-forms"]', function (e) {
-                e.preventDefault();
-
-                var id = $(this).find('#delete_id').val();
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        if (response.success) {
-                            $('.refresh').load(location.href + " .refresh");
-                            $('#deletemodal' + id).modal('hide');
-                            $('#Productupdated-forms' + id)[0].reset();
-                        } else {
-                            alert('Something wrong');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        alert('Something wrong');
-                    }
-                });
-            });
-
-        });
-
-        // Searching function
-        $(document).ready(function () {
-        $("#search-input").on("keyup", function (e) {
-            if (e.keyCode === 13) {
-                Search();
-            } else {
-                clearTimeout($(this).data("timeout"));
-                $(this).data("timeout", setTimeout(Search, 500)); 
-            }
-        });
-            function Search() {
-                var query = $("#search-input").val();
-                $.ajax({
-                    type: "GET",
-                    url: "{%url 'Product'%}",
-                    data: { "query": query , "methods":'search'},
-                    success: function (data) {
-                        $("#search-results").html(data);
-                    }
-                });
-            }
-        
-        });
-
 
     // Image-show
     function previewImage() {

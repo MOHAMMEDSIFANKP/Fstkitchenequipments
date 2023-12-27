@@ -3,7 +3,7 @@
 {% block title %}Home | Fst kichen equipments{% endblock  %}
 {% block body %}
 <!-- Slider -->
-<section class="section-slide">
+{% if bg_images %}<section class="section-slide">
     <div class="wrap-slick1">
         <div class="slick1">
 			{% for bg_image in bg_images %}
@@ -35,7 +35,9 @@
         </div>
     </div>
 </section>
+{% endif %}
 
+{% if category_data %}
 	<!-- Banner -->
 	<div class="sec-banner bg0 p-t-80 p-b-50">
 			<div class="container">
@@ -79,7 +81,7 @@
 		</div>
 	</div>
 
-
+	{% endif %}
 	<!-- Product -->
 	<section class="bg0 p-t-23 p-b-100">
 		<div class="container">
@@ -137,42 +139,48 @@
 			</div>
 			<!-- Products -->
 			<div  id='search-results'>
-			<input type="hidden" value="{{category_id}}" id="category_id">
-			<div class="row isotope-grid ">
-				{% for product in products_data %}
-				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-					<!-- Block2 -->
-					<div class="block2">
-						<div class="block2-pic hov-img0">
-							<img src="{{product.cropped_image.url}}" alt="IMG-PRODUCT">
+				<input type="hidden" value="{{category_id}}" id="category_id">
+				<div class="row isotope-grid ">
+					{% if products_data %}
+					{% for product in products_data %}
+					<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+						<!-- Block2 -->
+						<div class="block2">
+							<div class="block2-pic hov-img0">
+								<img src="{{product.cropped_image.url}}" alt="IMG-PRODUCT">
 
-							<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-								Quick View
-							</a>
-						</div>
-
-						<div class="block2-txt flex-w flex-t p-t-14">
-							<div class="block2-txt-child1 flex-col-l ">
-								
-								<span class="stext-105 cl3"style="font-size: small !important;" >
-									{{product.category.name}}
-								</span>
-								<a href="product-detail.html" style="color: rgb(39, 35, 35);" class=" cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-									{{product.name}}
+								<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+									Quick View
 								</a>
-
 							</div>
 
-							<div class="block2-txt-child2 flex-r p-t-3">
-								{% comment %} <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-									<img class="icon-heart1 dis-block trans-04" src="{%static 'images/icons/icon-heart-01.png'%}" alt="ICON">
-									<img class="icon-heart2 dis-block trans-04 ab-t-l" src="{%static 'images/icons/icon-heart-02.png'%}" alt="ICON">
-								</a> {% endcomment %}
+							<div class="block2-txt flex-w flex-t p-t-14">
+								<div class="block2-txt-child1 flex-col-l ">
+									
+									<span class="stext-105 cl3"style="font-size: small !important;" >
+										{{product.category.name}}
+									</span>
+									<a href="product-detail.html" style="color: rgb(39, 35, 35);" class=" cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+										{{product.name}}
+									</a>
+
+								</div>
+
+								<div class="block2-txt-child2 flex-r p-t-3">
+									{% comment %} <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+										<img class="icon-heart1 dis-block trans-04" src="{%static 'images/icons/icon-heart-01.png'%}" alt="ICON">
+										<img class="icon-heart2 dis-block trans-04 ab-t-l" src="{%static 'images/icons/icon-heart-02.png'%}" alt="ICON">
+									</a> {% endcomment %}
+								</div>
 							</div>
 						</div>
 					</div>
+					{% endfor %}
+					{% else %}
+				<div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center p-b-35 isotope-item women">
+					<img src="{%static 'images/product-not-found.jpg'%}" alt="">
 				</div>
-				{% endfor %}
+				{% endif %}
 			</div>
 		</div>
 			<!-- Load more -->
@@ -183,6 +191,7 @@
 			</div>
 		</div>
 	</section>
+	{% if clients_data %}
 	<div class="container">
 		<h2 class="companees-headding">Our Clients</h2>
 		<div class="slick-carousel d-flex companees-man-div">
@@ -193,7 +202,7 @@
 			{% endfor %}
 		</div>
 	</div>
-	
+	{% endif %}
 </div>
 
 {% comment %} {% include "user/home/owlcarousel.html" %} {% endcomment %}

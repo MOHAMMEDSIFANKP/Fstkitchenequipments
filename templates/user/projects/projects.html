@@ -1,7 +1,37 @@
 {% extends "user/base.html" %} 
 {% load static %}
 {% block title %}Projects | Fst kichen equipments{% endblock %} {% block body %}
+<style>
+    .card-property{
+        padding: 4%;
 
+    }
+    .hov-img0 {
+    position: relative;
+}
+
+.details-button {
+    position: absolute;
+    bottom: -10%; 
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 15px;
+    background-color: #fff;
+    color: black; 
+    border: none;
+    border-radius: 20px;
+    width: 50%;
+    opacity: 0;
+    transition: opacity 0.4s ease, bottom 0.5s ease;
+    cursor: pointer;
+}
+
+.hov-img0:hover .details-button {
+    opacity: 1; 
+    bottom: 8%;
+}
+
+</style>
 <div style="height: 7%" class="space-div"></div>
 <div class="bg0 m-t-23 " style="margin-top: 10px">
     <!-- Title page -->
@@ -12,7 +42,40 @@
     </section>
     <!-- Content page -->
     <section class="bg0 p-t-75 p-b-120 container main-div" >
-       
+        <div class="d-flex row">
+            <div class="col-12 col-md-6 col-lg-4 card-property ">
+                <div class="how-bor1">
+                    <div class="hov-img0">
+                        <img src="{% static "images/about-01.jpg" %}" alt="IMG">
+                        <button class="details-button">Details</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 card-property ">
+                <div class="how-bor1">
+                    <div class="hov-img0">
+                        <img src="{% static "images/about-01.jpg" %}" alt="IMG">
+                        <button class="details-button">Details</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 card-property ">
+                <div class="how-bor1">
+                    <div class="hov-img0">
+                        <img src="{% static "images/about-01.jpg" %}" alt="IMG">
+                        <button class="details-button">Details</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4 card-property ">
+                <div class="how-bor1">
+                    <div class="hov-img0">
+                        <img src="{% static "images/about-01.jpg" %}" alt="IMG">
+                        <button class="details-button">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 {% endblock %}
