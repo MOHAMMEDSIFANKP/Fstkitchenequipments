@@ -136,7 +136,7 @@ class Product(CustomLoginRequiredAdmin,FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products_data'] = Products.objects.all()
+        context['products_data'] = Products.objects.all().order_by('-id')
         context['category_data'] = Categories.objects.all().order_by('name')
         return context
     
@@ -145,9 +145,9 @@ class Product(CustomLoginRequiredAdmin,FormView):
             query = request.GET.get('query', '').strip()    
             category_id = request.GET.get('category_id', '').strip()
             if category_id and category_id != 'all':
-                instance_data = Products.objects.filter(category_id=category_id, name__icontains=query) | Products.objects.filter(category_id=category_id, category__name__icontains=query)
+                instance_data = Products.objects.filter(category_id=category_id, name__icontains=query).order_by('-id') | Products.objects.filter(category_id=category_id, category__name__icontains=query).order_by('-id')
             else:
-                instance_data = Products.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query))
+                instance_data = Products.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query)).order_by('-id')
             return render(request, 'dashboard/products/search_data.html', {'products_data': instance_data, 'category_id': category_id})
 
         return super().get(request, *args, **kwargs)
@@ -155,17 +155,15 @@ class Product(CustomLoginRequiredAdmin,FormView):
     def post(self, request, *args, **kwargs):
         pk = request.POST.get('id')
         methods = request.POST.get('methods')
-
         if pk and methods == 'put':
             instance = get_object_or_404(Products, pk=pk)
-            form = ProductFroms(request.POST, request.FILES, instance=instance)
+            form = self.form_class(request.POST, request.FILES, instance=instance)
         elif pk and methods == 'delete':
             instance = get_object_or_404(Products, pk=pk)
             instance.delete()
             return JsonResponse({'success': True})
         else:
-            form = ProductFroms(request.POST, request.FILES)
-
+            form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return JsonResponse({'success': True})
@@ -257,44 +255,3 @@ class Contacts_dashboard(CustomAuthenticationForm, ListView):
             return render(request, 'dashboard/contacts/search_data.html', {'data_list': queryset})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
-
-
-
-class About_Dashboard(CustomLoginRequiredAdmin, FormView):
-    template_name = 'dashboard/about/about.html'
-    form_class = AboutOurStoryForms
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['story_data'] = About_Story.objects.all().first()
-        return context
-    
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data()
-        return self.render_to_response(context)
-
-    def post(self, request, *args, **kwargs):
-        pk = request.POST.get('id')
-        methods = request.POST.get('methods')
-
-        if pk:
-            instance = get_object_or_404(About_Story, pk=pk)
-            form = AboutOurStoryForms(request.POST, request.FILES, instance=instance)
-        elif pk and methods == 'delete':
-            instance = get_object_or_404(About_Story, pk=pk)
-            instance.delete()
-            return JsonResponse({'success': True})
-        else:
-            form = AboutOurStoryForms(request.POST, request.FILES)
-
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'errors': form.errors})
-
-
-class Updateviews(UpdateView):
-    model = About_Story
-    fileds = ['image','body']
-    

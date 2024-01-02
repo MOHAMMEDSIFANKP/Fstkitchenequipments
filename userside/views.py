@@ -108,16 +108,34 @@ class Careers_Page(FormView):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors})
-        
+
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
 class Contact_Page(FormView):
     form_class = ContactFroms
     template_name = 'user/contact_us/contact_us.html'
 
     def post(self, request, *args, **kwargs):
+        name = request.POST.get('name')
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
+            try:
+                mail_subject = f'{name} contacted you'
+                message_html = render_to_string('user/email_content.html', {
+                    'details': form.data,
+                })
+                to_email = settings.EMAIL_HOST_USER
+                send_email = EmailMessage(mail_subject, message_html, to=[to_email])
+                send_email.send()
+                return JsonResponse({'success': True})
+            except Exception as e:
+                pass
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False,'errors': form.errors})
-
+        
+class sample(TemplateView):
+    template_name = 'user/email_content.html'

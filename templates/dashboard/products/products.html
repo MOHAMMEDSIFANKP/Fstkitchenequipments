@@ -78,17 +78,39 @@
                                 <form action="{%url 'Product'%}" id="Product-forms"
                                     enctype="multipart/form-data" method="POST">
                                     {% csrf_token %}
-                                    <div style="width: 100px;"
-                                    class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="img-fluid w-100"
-                                        src="" alt=""  id="image-preview" style="display: none;">
-                                     </div>
-                                    <div class="form-outline mb-2">
-                                        <input name="image" type="file" accept="image/png, image/jpeg, image/svg"
-                                            class="form-control" id="image-input" onchange="previewImage()"/>
-                                        <small id="image-error" class="text-danger text-center "></small>
-                                        {{ form.image.errors }}
+                                    <div style="display: flex; gap: 13%;">
+                                        <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                            <img class="img-fluid w-100" src="" alt="" id="image-preview1" style="display: none;">
+                                        </div>
+                                        <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                            <img class="img-fluid w-100" src="" alt="" id="image-preview2" style="display: none;">
+                                        </div>
+                                        <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                            <img class="img-fluid w-100" src="" alt="" id="image-preview3" style="display: none;">
+                                        </div>
                                     </div>
+                                    
+                                    <div style="display: flex;">
+                                        <div class="form-outline mb-2">
+                                            <input name="image1" type="file" accept="image/png, image/jpeg, image/svg"
+                                                class="form-control" id="image-input1" onchange="previewImage('image-input1', 'image-preview1')"/>
+                                            <small id="image-error1" class="text-danger text-center"></small>
+                                            {{ form.image1.errors }}
+                                        </div>
+                                        <div class="form-outline mb-2">
+                                            <input name="image2" type="file" accept="image/png, image/jpeg, image/svg"
+                                                class="form-control" id="image-input2" onchange="previewImage('image-input2', 'image-preview2')"/>
+                                            <small id="image-error2" class="text-danger text-center"></small>
+                                            {{ form.image2.errors }}
+                                        </div>
+                                        <div class="form-outline mb-2">
+                                            <input name="image3" type="file" accept="image/png, image/jpeg, image/svg"
+                                                class="form-control" id="image-input3" onchange="previewImage('image-input3', 'image-preview3')"/>
+                                            <small id="image-error3" class="text-danger text-center"></small>
+                                            {{ form.image3.errors }}
+                                        </div>
+                                    </div>                                    
+                                    
                                     <div class="form-outline">
                                         <label class="form-label" for="form3Example3cg">Name</label>
                                         <input name='name' type="text" id="form3Example3cg"
@@ -96,6 +118,7 @@
                                         <small id="name-error" class="text-danger ps-2 text-center"></small>
                                         {{ form.name.errors }}
                                     </div>
+                                    
                                     <div class="form-outline mb-3">
                                         <label class="form-label" for="form3Example3cg">Category</label>
                                         <select class="form-select" name='category' aria-label="Default select example">
@@ -106,6 +129,12 @@
                                           </select>
                                         <small id="category-error" class="text-danger ps-2 text-center"></small>
                                         {{ form.category.errors }}
+                                    </div>
+                                    <div class="form-outline">
+                                        <label class="form-label" for="form3Example3cg">Descrption</label>
+                                        <textarea name="descrption"  class="form-control form-control-lg" id="" cols="30" rows="10"></textarea>
+                                        <small id="descrption-error" class="text-danger ps-2 text-center"></small>
+                                        {{ form.descrption.errors }}
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit"
@@ -129,7 +158,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">id</th>
-                                        <th scope="col">image</th>
+                                        <th scope="col">images</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Created at</th>
@@ -142,7 +173,29 @@
                                     <td> {{Product.id}} </td>
                                     <td>
                                         <div style="width: 60px;" class="overflow-hidden">
-                                            <img class="w-100" src=" {{Product.cropped_image.url}} " alt="">
+                                            {% if Product.cropped_image1.url %}
+                                            <img class="w-100" src="{{ Product.cropped_image1.url }}" alt="">
+                                            {% else %}
+                                            <img class="w-100" src="{{ Product.image1.url }}" alt="">
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="width: 60px;" class="overflow-hidden">
+                                            {% if Product.cropped_image2.url %}
+                                            <img class="w-100" src="{{ Product.cropped_image2.url }}" alt="">
+                                            {% else %}
+                                            <img class="w-100" src="{{ Product.image2.url }}" alt="">
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="width: 60px;" class="overflow-hidden">
+                                            {% if Product.cropped_image3.url %}
+                                            <img class="w-100" src="{{ Product.cropped_image3.url }}" alt="">
+                                            {% else %}
+                                            <img class="w-100" src="{{ Product.image3.url }}" alt="">
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td> {{Product.name}} </td>
@@ -178,19 +231,44 @@
                                                             <input type="hidden" name="id" id="Product_id"
                                                                 value="{{Product.id}}">
                                                             <input type="hidden" name="methods" value="put">
-                                                            <div style="width: 100px;"
-                                                                class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
-                                                                <img class="img-fluid w-100"  id="image-preview"
-                                                                    src="{{Product.cropped_image.url}}" alt="">
+                                                            <div style="display: flex; gap: 13%;">
+                                                                <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                                                    {% if Product.image1%}
+                                                                    <img class="img-fluid w-100" src="{{Product.cropped_image1.url}}" alt="" id="image-preview1">
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                                                    {% if Product.image2%}
+                                                                    <img class="img-fluid w-100" src="{{Product.cropped_image2.url}}" alt="" id="image-preview1">
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
+                                                                    {% if Product.image3%}
+                                                                    <img class="img-fluid w-100" src="{{Product.cropped_image3.url}}" alt="" id="image-preview1">
+                                                                    {% endif %}
+                                                                </div>
                                                             </div>
 
-                                                            <div class="form-outline mb-4">
-                                                                <input name="image" type="file"
-                                                                    accept="image/png, image/jpeg, image/svg"
-                                                                    class="form-control" id="image-inputs" onchange="previewImage()" />
-                                                                <small id="image-error{{Product.id}}"
-                                                                    class="text-danger text-center"></small>
-                                                            </div>
+                                                            <div style="display: flex;">
+                                                                <div class="form-outline mb-2">
+                                                                    <input name="image1" multiple type="file" accept="image/png, image/jpeg, image/svg"
+                                                                        class="form-control" id="image-input1" onchange="previewImage('image-input1', 'image-preview1')"/>
+                                                                    <small id="image-error" class="text-danger text-center"></small>
+                                                                    {{ form.image1.errors }}
+                                                                </div>
+                                                                <div class="form-outline mb-2">
+                                                                    <input name="image2" multiple type="file" accept="image/png, image/jpeg, image/svg"
+                                                                        class="form-control" id="image-input2" onchange="previewImage('image-input2', 'image-preview2')"/>
+                                                                    <small id="image-error2" class="text-danger text-center"></small>
+                                                                    {{ form.image2.errors }}
+                                                                </div>
+                                                                <div class="form-outline mb-2">
+                                                                    <input name="image3" multiple type="file" accept="image/png, image/jpeg, image/svg"
+                                                                        class="form-control" id="image-input3" onchange="previewImage('image-input3', 'image-preview3')"/>
+                                                                    <small id="image-error3" class="text-danger text-center"></small>
+                                                                    {{ form.image3.errors }}
+                                                                </div>
+                                                            </div>    
 
                                                             <div class="form-outline mb-4">
                                                                 <label class="form-label" for="form3Example3cg">Sub
@@ -215,6 +293,12 @@
                                                                   </select>
                                                                 <small id="category-error{{Product.id}}" class="text-danger ps-2 text-center"></small>
                                                                 {{ form.category.errors }}
+                                                            </div>
+                                                            <div class="form-outline">
+                                                                <label class="form-label" for="form3Example3cg">Descrption</label>
+                                                                <textarea name="descrption"  class="form-control form-control-lg" id="" cols="30" rows="10">{{Product.descrption}}</textarea>
+                                                                <small id="descrption-error{{Product.id}}" class="text-danger ps-2 text-center"></small>
+                                                                {{ form.descrption.errors }}
                                                             </div>
                                                             <div class="d-flex justify-content-center">
                                                                 <button type="submit"
@@ -298,13 +382,17 @@
                     processData: false,
                     contentType: false,
                     success: function (response) {
-                        $('.refresh').load(location.href + " .refresh");
                         if (response.success) {
+                            $('.refresh').load(location.href + " .refresh");
                             $('#addmodal').modal('hide');
                             $('#Product-forms')[0].reset();
-                            $("#image-preview").css("display", "none");
+                            $("#image-preview1").css("display", "none");
+                            $("#image-preview2").css("display", "none");
+                            $("#image-preview3").css("display", "none");
                         } else {
-                            updateErrorMessages(response.errors);
+                            if (response.errors){
+                                updateErrorMessages(response.errors);
+                            }
                         }
                     },
                     error: function (xhr, status, error) {
@@ -313,12 +401,22 @@
                 });
             });
         });
-
         function updateErrorMessages(errors) {
-            if (errors.image) {
-                $('#' + 'image-error').text(errors.image);
+            console.log(errors.image1);
+            if (errors.image1) {
+                $('#' + 'image-error1').text(errors.image1);
             } else {
-                $('#' + 'image-error').text('')
+                $('#' + 'image-error1').text('')
+            }
+            if (errors.image2) {
+                $('#' + 'image-error2').text(errors.image2);
+            } else {
+                $('#' + 'image-error2').text('')
+            }
+            if (errors.image3) {
+                $('#' + 'image-error3').text(errors.image3);
+            } else {
+                $('#' + 'image-error3').text('')
             }
             if (errors.name) {
                 $('#' + 'name-error').text(errors.name);
@@ -329,6 +427,11 @@
                 $('#' + 'category-error').text(errors.category);
             } else {
                 $('#' + 'category-error').text('')
+            }
+            if (errors.descrption) {
+                $('#' + 'descrption-error').text(errors.descrption);
+            } else {
+                $('#' + 'descrption-error').text('')
             }
         }
         // Updating Function
@@ -363,6 +466,11 @@
                                 $('#' + 'category-error' + id).text(response.errors.category);
                             } else {
                                 $('#' + 'category-error' + id).text('')
+                            }
+                            if (response.errors.descrption) {
+                                $('#' + 'descrption-error' + id).text(response.errors.descrption);
+                            } else {
+                                $('#' + 'descrption-error' + id).text('')
                             }
                         }
                     },
@@ -444,17 +552,18 @@
 
 
     // Image-show
-    function previewImage() {
-        var input = document.getElementById('image-input');
-        var preview = document.getElementById('image-preview');
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
+    function previewImage(inputId, previewId) {
+    var input = document.getElementById(inputId);
+    var preview = document.getElementById(previewId);
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
     }
+}
     </script>
     {% endblock %}

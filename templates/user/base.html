@@ -38,6 +38,19 @@
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 <style>
+	.whatsapp-icons {
+		position: fixed;
+		bottom: 30px;
+		right: 20px;
+		z-index: 999; /* Ensure it's above other elements */
+		cursor: pointer;
+		
+	}
+	.whatsapp-icons img{
+		background-color: white;
+		border-radius: 50%;
+		box-shadow: inset;
+	}
 	 .scroll-container {
     width: 100%;
     height: auto;
@@ -90,6 +103,7 @@
 {% include "user/navbar.html" %}
 {% block body %}{% endblock %}
 {% include "user/footer.html" %}
+<div class="whatsapp-icons"><a href="https://wa.me/917306170016"  target="_blank"><img width="60" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png" alt=""></a></div>
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
     const container = document.querySelector('.scroll-container');

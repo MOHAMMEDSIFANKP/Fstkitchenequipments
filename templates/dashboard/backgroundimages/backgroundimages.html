@@ -355,6 +355,7 @@
                         if (response.success) {
                             $('.refresh').load(location.href + " .refresh");
                             $('#deletemodal' + id).modal('hide');
+                            $('#image-preview' + id).css('display', 'none');
                             $('#backgroudimagesupdated-forms' + id)[0].reset();
                         } else {
                             alert('Something wrong');

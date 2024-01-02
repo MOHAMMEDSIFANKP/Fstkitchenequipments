@@ -11,6 +11,5 @@ urlpatterns = [
     path('clients/',Clients_View.as_view(), name='Clients_View'),
     path('careers/',Careers_Dashboard.as_view(), name='Careers_Dashboard'),
     path('contacts/',Contacts_dashboard.as_view(), name='Contacts_dashboard'),
-    path('about_dashboard/',About_Dashboard.as_view(), name='About_Dashboard'),
 
 ]

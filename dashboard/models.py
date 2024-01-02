@@ -1,17 +1,14 @@
 from django.db import models
-from ckeditor.fields import RichTextField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 # Create your models here.
 
 class BgImages(models.Model):
     image = models.ImageField(upload_to='backgroundimages/')
+    cropped_image = ImageSpecField(source='image', processors=[ResizeToFill(1200, 525)], format='JPEG', options={'quality': 100})
+
     sub_heading = models.CharField(max_length=150,blank=True,null=True)
     main_heading = models.CharField(max_length=150,blank=True,null=True)
-    cropped_image = ImageSpecField(source='image',
-                                   processors=[ResizeToFill(1200, 525)],
-                                   format='JPEG',
-                                   options={'quality': 100})
 
     def __str__(self):
         return self.main_heading
@@ -19,36 +16,36 @@ class BgImages(models.Model):
 class Categories(models.Model):
     image = models.ImageField(upload_to='category/')
     name = models.CharField(max_length=150,null=True,blank=True)
-    cropped_image = ImageSpecField(source='image',
-                                   processors=[ResizeToFill(864, 432)],
-                                   format='JPEG',
-                                   options={'quality': 100})
+    cropped_image = ImageSpecField(source='image',processors=[ResizeToFill(864, 432)],format='JPEG',options={'quality': 100})
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
-
+    
 class Products(models.Model):
-    image = models.ImageField(upload_to='products/')
-    cropped_image = ImageSpecField(source='image',
-                                   processors=[ResizeToFill(300, 400)],
-                                   format='JPEG',
-                                   options={'quality': 100})
+    image1 = models.ImageField(upload_to='products/')
+    cropped_image1 = ImageSpecField(source='image1', processors=[ResizeToFill(300, 400)], format='JPEG', options={'quality': 100})
+    
+    image2 = models.ImageField(blank=True, null=True, upload_to='products/')
+    cropped_image2 = ImageSpecField(source='image2', processors=[ResizeToFill(300, 400)], format='JPEG', options={'quality': 100})
+    
+    image3 = models.ImageField(blank=True, null=True, upload_to='products/')
+    cropped_image3 = ImageSpecField(source='image3', processors=[ResizeToFill(300, 400)], format='JPEG', options={'quality': 100})
+    
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
-    name = models.CharField(max_length=150,null=True,blank=True)
+    name = models.CharField(max_length=150, null=True, blank=True)
+    descrption = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
-
     def __str__(self):
         return self.name
-    
+
 
 class Clients(models.Model):
     image = models.ImageField(upload_to='clients/')
-    cropped_image = ImageSpecField(source='image',
-                                   processors=[ResizeToFill(626, 626)],
-                                   format='JPEG',
-                                   options={'quality': 100})
+    cropped_image = ImageSpecField(source='image',processors=[ResizeToFill(626, 626)],format='JPEG',options={'quality': 100})
+
     name = models.CharField(max_length=150,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -72,12 +69,4 @@ class Contacts(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-class About_Story(models.Model):
-    image = models.ImageField(upload_to='story/')
-    cropped_image = ImageSpecField(source='image',
-                                processors=[ResizeToFill(1200, 1200)],
-                                format='JPEG',
-                                options={'quality': 100})
-    body = RichTextField()
-    created_at = models.DateTimeField(auto_now_add=True)
 
