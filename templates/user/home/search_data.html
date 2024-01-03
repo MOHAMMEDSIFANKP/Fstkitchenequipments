@@ -1,4 +1,5 @@
 {% load static %}
+<link rel="stylesheet" type="text/css" href="{%static 'css/main.css' %}">
 <input type="hidden" value="{{category_id}}" id="category_id">
 <div class="row isotope-grid ">
 	{% if products_data %}
@@ -7,34 +8,102 @@
 		<!-- Block2 -->
 		<div class="block2">
 			<div class="block2-pic hov-img0">
-				<img src="{{product.cropped_image.url}}" alt="IMG-PRODUCT">
+				<img src="{{product.cropped_image1.url}}" alt="IMG-PRODUCT">
 
-				{% comment %} <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+				<a href="#" data-product="{{product.id}}" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modals">
 					Quick View
-				</a> {% endcomment %}
+				</a> 
 			</div>
 
+			<!-- Modal -->
+			<div class="wrap-modal1 js-modals{{product.id}} p-t-40 p-b-20 modal-height">
+				<div class="overlay-modal1 js-hide-modals" data-product="{{product.id}}"></div>
+			
+				<div class="container">
+					<div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent ">
+						<button class="how-pos3 hov3 trans-04 js-hide-modals" data-product="{{product.id}}">
+							<img src="{%static 'images/icons/icon-close.png'%}" alt="CLOSE">
+						</button>
+			
+						<div class="row">
+							<div class="col-md-6 col-lg-7 p-b-30">
+								<div class="p-l-25 p-r-30 p-lr-0-lg">
+									<div class="wrap-slick3 flex-sb flex-w">
+										<div class="wrap-slick3-dots"></div>
+										<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+			
+										<div class="slick3 gallery-lb">
+											{% if product.image1%}
+											<div class="item-slick3" data-thumb="{{product.cropped_image1.url}}">
+												<div class="wrap-pic-w pos-relative">
+													<img src="{{product.cropped_image1.url}}" alt="IMG-PRODUCT" style="width: 90% !important;">
+			
+													<a  style="margin-right: 11%;" class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{product.cropped_image1.url}}">
+														<i class="fa fa-expand"></i>
+													</a>
+												</div>
+											</div>
+											{% endif %}
+											{% if product.image2%}
+											<div class="item-slick3" data-thumb="{{product.cropped_image2.url}}">
+												<div class="wrap-pic-w pos-relative">
+													<img src="{{product.cropped_image2.url}}" alt="IMG-PRODUCT" style="width: 90% !important;">
+			
+													<a  style="margin-right: 11%;" class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{product.cropped_image2.url}}">
+														<i class="fa fa-expand"></i>
+													</a>
+												</div>
+											</div>
+											{% endif %}
+											{% if product.image3%}
+											<div class="item-slick3" data-thumb="{{product.cropped_image3.url}}">
+												<div class="wrap-pic-w pos-relative">
+													<img src="{{product.cropped_image3.url}}" alt="IMG-PRODUCT" style="width: 90% !important;">
+			
+													<a  style="margin-right: 11%;" class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{product.cropped_image3.url}}">
+														<i class="fa fa-expand"></i>
+													</a>
+												</div>
+											</div>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-md-6 col-lg-5 p-b-30">
+								<div class="p-r-50 p-t-5 p-lr-0-lg">
+									<h4 class="mtext-105 cl2 js-name-detail text-capitalize p-b-14" style="font-weight: bold;">
+										{{product.name}}
+									</h4>
+			
+									<span class="stext-105 cl3 " style="font-size: large;">
+										{{product.category.name}}
+									</span>
+			
+									<p class="stext-102 cl3 p-t-23">
+										{{product.descrption}}
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End modal -->
 			<div class="block2-txt flex-w flex-t p-t-14">
 				<div class="block2-txt-child1 flex-col-l ">
-					
 					<span class="stext-105 cl3"style="font-size: small !important;" >
 						{{product.category.name}}
 					</span>
-					<a href="product-detail.html" style="color: rgb(39, 35, 35);" class=" cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+					<button style="color: rgb(39, 35, 35);" class=" cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
 						{{product.name}}
-					</a>
+					</button>
 
-				</div>
-
-				<div class="block2-txt-child2 flex-r p-t-3">
-					{% comment %} <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-						<img class="icon-heart1 dis-block trans-04" src="{%static 'images/icons/icon-heart-01.png'%}" alt="ICON">
-						<img class="icon-heart2 dis-block trans-04 ab-t-l" src="{%static 'images/icons/icon-heart-02.png'%}" alt="ICON">
-					</a> {% endcomment %}
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>			
 	{% endfor %}
 	{% else %}
 	<div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center p-b-35 isotope-item women">
@@ -42,3 +111,45 @@
 	</div>
 	{% endif %}
 </div>
+
+<script src="{%static 'js/slick-custom.js'%}"></script>
+<script src="{%static 'vendor/MagnificPopup/jquery.magnific-popup.min.js'%}"></script>
+<script>
+	$('.gallery-lb').each(function() { // the containers for all your galleries
+		$(this).magnificPopup({
+			delegate: 'a', // the selector for gallery item
+			type: 'image',
+			gallery: {
+				enabled:true
+			},
+			mainClass: 'mfp-fade'
+		});
+	});
+
+	// Show modal
+
+	$('.js-show-modals').on('click',function(e){
+	e.preventDefault();
+	var productId = $(this).data('product');
+	$('.js-modals'+productId).addClass('show-modal1');
+	});
+
+	$('.js-hide-modals').on('click', function () {
+	var productId = $(this).data('product');
+	$('.js-modals' + productId).removeClass('show-modal1');
+	}); 
+
+	function initializeModal() {
+		// Show modal
+		$('.js-show-modals').on('click', function (e) {
+			e.preventDefault();
+			var productId = $(this).data('product');
+			$('.js-modals' + productId).addClass('show-modal1');
+		});
+
+		$('.js-hide-modals').on('click', function () {
+			var productId = $(this).data('product');
+			$('.js-modals' + productId).removeClass('show-modal1');
+		});
+	}
+</script>

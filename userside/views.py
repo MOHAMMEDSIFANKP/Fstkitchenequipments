@@ -137,5 +137,3 @@ class Contact_Page(FormView):
         else:
             return JsonResponse({'success': False,'errors': form.errors})
         
-class sample(TemplateView):
-    template_name = 'user/email_content.html'
