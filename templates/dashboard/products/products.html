@@ -173,8 +173,8 @@
                                     <td> {{Product.id}} </td>
                                     <td>
                                         <div style="width: 60px;" class="overflow-hidden">
-                                            {% if Product.cropped_image1.url %}
-                                            <img class="w-100" src="{{ Product.cropped_image1.url }}" alt="">
+                                            {% if Product.image1 %}
+                                            <img class="w-100" src="{{ Product.image1.url }}" alt="">
                                             {% else %}
                                             <img class="w-100" src="{{ Product.image1.url }}" alt="">
                                             {% endif %}
@@ -182,19 +182,17 @@
                                     </td>
                                     <td>
                                         <div style="width: 60px;" class="overflow-hidden">
-                                            {% if Product.cropped_image2.url %}
-                                            <img class="w-100" src="{{ Product.cropped_image2.url }}" alt="">
-                                            {% else %}
+                                            {% if Product.image2 %}
                                             <img class="w-100" src="{{ Product.image2.url }}" alt="">
+                                            
                                             {% endif %}
                                         </div>
                                     </td>
                                     <td>
                                         <div style="width: 60px;" class="overflow-hidden">
-                                            {% if Product.cropped_image3.url %}
-                                            <img class="w-100" src="{{ Product.cropped_image3.url }}" alt="">
-                                            {% else %}
+                                            {% if Product.image3 %}
                                             <img class="w-100" src="{{ Product.image3.url }}" alt="">
+                                           
                                             {% endif %}
                                         </div>
                                     </td>
@@ -234,17 +232,17 @@
                                                             <div style="display: flex; gap: 13%;">
                                                                 <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
                                                                     {% if Product.image1%}
-                                                                    <img class="img-fluid w-100" src="{{Product.cropped_image1.url}}" alt="" id="image-preview1">
+                                                                    <img class="img-fluid w-100" src="{{Product.image1.url}}" alt="" id="image-preview1">
                                                                     {% endif %}
                                                                 </div>
                                                                 <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
                                                                     {% if Product.image2%}
-                                                                    <img class="img-fluid w-100" src="{{Product.cropped_image2.url}}" alt="" id="image-preview1">
+                                                                    <img class="img-fluid w-100" src="{{Product.image2.url}}" alt="" id="image-preview1">
                                                                     {% endif %}
                                                                 </div>
                                                                 <div style="width: 100px;" class="card-header Product-img position-relative overflow-hidden bg-transparent border p-0">
                                                                     {% if Product.image3%}
-                                                                    <img class="img-fluid w-100" src="{{Product.cropped_image3.url}}" alt="" id="image-preview1">
+                                                                    <img class="img-fluid w-100" src="{{Product.image3.url}}" alt="" id="image-preview1">
                                                                     {% endif %}
                                                                 </div>
                                                             </div>
